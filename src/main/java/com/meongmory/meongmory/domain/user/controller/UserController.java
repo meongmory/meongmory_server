@@ -1,4 +1,4 @@
-package com.meongmory.meongmory.controller;
+package com.meongmory.meongmory.domain.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

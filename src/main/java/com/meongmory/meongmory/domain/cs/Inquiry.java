@@ -19,15 +19,14 @@ public class Inquiry extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="userId")
-    private User userId;
+    private User user;
 
     private String email;
     private String content;
 
     @Builder
-    public Inquiry(Long inquryId, User userId, String email, String content){
-        this.inquryId = inquryId;
-        this.userId = userId;
+    public Inquiry( User user, String email, String content){
+        this.user = user;
         this.email=email;
         this.content=content;
     }

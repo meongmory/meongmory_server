@@ -19,7 +19,7 @@ public class Pet extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="animalId")
-    private Animal animalId;
+    private Animal animal;
 
     private String name;
 
@@ -31,9 +31,8 @@ public class Pet extends BaseEntity {
     private String imgKey;
 
     @Builder
-    public Pet(Long petId, Animal animalId, String name, Gender gender, LocalDate birth, LocalDate adopt_date, String registration, String imgKey) {
-        this.petId = petId;
-        this.animalId = animalId;
+    public Pet(Animal animal, String name, Gender gender, LocalDate birth, LocalDate adopt_date, String registration, String imgKey) {
+        this.animal = animal;
         this.name=name;
         this.gender=gender;
         this.birth=birth;

@@ -19,7 +19,8 @@ public class Diary extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="petId")
-    private Pet petId;
+    private Pet pet;
+
     private String title;
     private String content;
 
@@ -27,9 +28,8 @@ public class Diary extends BaseEntity {
     private Scope scope;
 
     @Builder
-    public Diary(Long diaryId, Pet petId, String title, String content, Scope scope) {
-        this.diaryId = diaryId;
-        this.petId = petId;
+    public Diary(Pet pet, String title, String content, Scope scope) {
+        this.pet = pet;
         this.title=title;
         this.content=content;
         this.scope=scope;

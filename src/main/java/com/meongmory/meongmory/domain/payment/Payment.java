@@ -19,11 +19,10 @@ public class Payment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="userId")
-    private User userId;
+    private User user;
 
     @Builder
-    public Payment(Long paymentId, User userId) {
-        this.paymentId = paymentId;
-        this.userId = userId;
+    public Payment(User user) {
+        this.user = user;
     }
 }

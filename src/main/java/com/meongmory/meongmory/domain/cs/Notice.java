@@ -22,8 +22,7 @@ public class Notice extends BaseEntity {
     private String comment;
 
     @Builder
-    public Notice(Long noticeId,String title,String comment) {
-        this.noticeId = noticeId;
+    public Notice(String title,String comment) {
         this.title=title;
         this.comment=comment;
     }

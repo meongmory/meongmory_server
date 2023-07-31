@@ -23,8 +23,7 @@ public class User extends BaseEntity {
     private License license;
 
     @Builder
-    public User(Long userId, String nickname, String phone, Boolean marketing, License license) {
-        this.userId = userId;
+    public User(String nickname, String phone, Boolean marketing, License license) {
         this.nickname=nickname;
         this.phone=phone;
         this.marketing=marketing;

@@ -12,27 +12,26 @@ import javax.persistence.*;
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Diary_Comment_Report extends BaseEntity {
+public class DiaryCommentReport extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryCommentReport;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="diaryCommentId")
-    private Diary_Comment diaryCommentId;
+    private DiaryComment diaryComment;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="userId")
-    private User userId;
+    private User user;
 
     @Enumerated(EnumType.STRING)
     private Reason reason;
 
     @Builder
-    public Diary_Comment_Report(Long diaryCommentReport, Diary_Comment diaryCommentId, User userId, Reason reason) {
-        this.diaryCommentReport = diaryCommentReport;
-        this.diaryCommentId = diaryCommentId;
-        this.userId = userId;
+    public DiaryCommentReport(DiaryComment diaryComment, User user, Reason reason) {
+        this.diaryComment = diaryComment;
+        this.user = user;
         this.reason=reason;
     }
 }

@@ -17,23 +17,14 @@ public class Family extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyId;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="diaryId")
-    private Diary diaryId;
-
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private Family_invite_code familyInviteCode;
+    private String familyInviteCode;
 
-    @Enumerated(EnumType.STRING)
-    private Friend_invite_code friendInviteCode;
+    private String friendInviteCode;
 
     @Builder
-    public Family(Long familyId, Diary diaryId, String name, Family_invite_code familyInviteCode, Friend_invite_code friendInviteCode) {
-        this.familyId = familyId;
-        this.diaryId = diaryId;
+    public Family(String name, String familyInviteCode, String friendInviteCode) {
         this.name=name;
         this.familyInviteCode = familyInviteCode;
         this.friendInviteCode = friendInviteCode;

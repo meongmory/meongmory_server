@@ -1,8 +1,8 @@
 package com.meongmory.meongmory.domain.family.entity;
 
+import com.meongmory.meongmory.domain.diary.entity.Diary;
 import com.meongmory.meongmory.domain.user.entity.User;
 import com.meongmory.meongmory.global.entity.BaseEntity;
-import com.meongmory.meongmory.global.entity.Type;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,27 +13,27 @@ import javax.persistence.*;
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Family_Member extends BaseEntity {
+public class FamilyMember extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyMemberId;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private MemberType type;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="familyId")
-    private Family familyId;
+    private Family family;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="userId")
-    private User userId;
+    private User user;
+
 
     @Builder
-    public Family_Member(Long familyMemberId, Type type, Family familyId, User userId) {
-        this.familyMemberId = familyMemberId;
+    public FamilyMember(MemberType type, Family family, User user) {
         this.type=type;
-        this.familyId = familyId;
-        this.userId = userId;
+        this.family = family;
+        this.user = user;
     }
 }

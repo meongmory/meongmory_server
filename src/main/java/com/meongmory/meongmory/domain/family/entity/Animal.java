@@ -1,7 +1,7 @@
 package com.meongmory.meongmory.domain.family.entity;
 
+import com.meongmory.meongmory.global.entity.AnimalType;
 import com.meongmory.meongmory.global.entity.BaseEntity;
-import com.meongmory.meongmory.global.entity.Type;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,12 +19,11 @@ public class Animal extends BaseEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private AnimalType animalType;
 
     @Builder
-    public Animal(Long animalId, String name, Type type) {
-        this.animalId = animalId;
+    public Animal(String name, AnimalType animalType) {
         this.name=name;
-        this.type=type;
+        this.animalType = animalType;
     }
 }

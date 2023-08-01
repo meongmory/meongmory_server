@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum Scope {
-    PUBLIC_Family,PUBLIC_FRIENDS
+    PUBLIC_FAMILY,PUBLIC_FRIENDS
 }

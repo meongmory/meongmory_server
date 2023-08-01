@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class DiaryCommentReport extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long diaryCommentReport;
+    private Long diaryCommentReportId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="diaryCommentId")

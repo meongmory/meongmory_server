@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum License {
-    General, Pro
+    GENERAL, PRO
 }

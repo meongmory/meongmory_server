@@ -26,17 +26,17 @@ public class Pet extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private LocalDate birth;
-    private LocalDate adopt_date;
+    private LocalDate adoptDate;
     private String registration;
     private String imgKey;
 
     @Builder
-    public Pet(Animal animal, String name, Gender gender, LocalDate birth, LocalDate adopt_date, String registration, String imgKey) {
+    public Pet(Animal animal, String name, Gender gender, LocalDate birth, LocalDate adoptDate, String registration, String imgKey) {
         this.animal = animal;
         this.name=name;
         this.gender=gender;
         this.birth=birth;
-        this.adopt_date=adopt_date;
+        this.adoptDate=adoptDate;
         this.registration=registration;
         this.imgKey = imgKey;
     }

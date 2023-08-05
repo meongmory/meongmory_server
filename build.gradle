@@ -40,6 +40,9 @@ dependencies {
 	//sms
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 
+	//redis
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
@@ -58,8 +61,6 @@ dependencies {
 	// firebase
 	implementation 'com.google.firebase:firebase-admin:6.8.1'
 	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
-
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
 

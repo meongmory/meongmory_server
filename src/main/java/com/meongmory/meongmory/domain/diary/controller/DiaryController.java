@@ -6,6 +6,11 @@ import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +23,17 @@ public class DiaryController {
 
   private final DiaryService diaryService;
 
+  @Operation(summary = "다이어리 조회", description = "다이어리를 조회한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GetDiariesRes.class))}),
+  })
   @ResponseBody
   @GetMapping("/{familyId}")
   public ResponseCustom<GetDiariesRes> getDiaries(
-          @PathVariable("familyId") Long familyId,
-          @RequestParam Long userId,
-          @RequestParam Long petId,
-          @RequestParam String sortType
+          @Parameter(description = "가족 id") @PathVariable("familyId") Long familyId,
+          @Parameter(description = "유저 id") @RequestParam Long userId,
+          @Parameter(description = "반려동물 id") @RequestParam Long petId,
+          @Parameter(description = "정렬 형식 ('갤러리형식' or '리스트형식')") @RequestParam String sortType
   )
   {
     return ResponseCustom.OK(diaryService.getDiaries(userId, familyId, petId, sortType));

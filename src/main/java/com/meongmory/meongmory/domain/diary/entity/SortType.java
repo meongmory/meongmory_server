@@ -1,6 +1,7 @@
 package com.meongmory.meongmory.domain.diary.entity;
 
-import com.meongmory.meongmory.domain.diary.exception.SortTypeNotFoundException;
+import com.meongmory.meongmory.global.exception.BaseException;
+import com.meongmory.meongmory.global.exception.BaseResponseCode;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -19,6 +20,6 @@ public enum SortType {
   public static SortType getSortTypeByName(String name){
     return Arrays.stream(SortType.values())
             .filter(r -> r.getName().equals(name))
-            .findAny().orElseThrow(SortTypeNotFoundException::new);
+            .findAny().orElseThrow(() -> new BaseException(BaseResponseCode.SORT_TYPE_NOT_FOUND));
   }
 }

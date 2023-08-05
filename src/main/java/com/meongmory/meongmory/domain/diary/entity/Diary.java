@@ -1,5 +1,6 @@
 package com.meongmory.meongmory.domain.diary.entity;
 
+import com.meongmory.meongmory.domain.family.entity.Family;
 import com.meongmory.meongmory.domain.family.entity.Pet;
 import com.meongmory.meongmory.global.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -20,6 +21,10 @@ public class Diary extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="petId")
     private Pet pet;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name="familyId")
+    private Family family;
 
     private String title;
     private String content;

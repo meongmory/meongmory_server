@@ -4,6 +4,7 @@ import com.meongmory.meongmory.domain.diary.dto.request.RecordDiaryReq;
 import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 import com.meongmory.meongmory.domain.diary.repository.DiaryRepository;
+import com.meongmory.meongmory.domain.family.repository.FamilyPetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class DiaryServiceImpl implements DiaryService {
   @Override
   public GetDiariesRes getDiaries(Long userId, Long familyId)
   {
+
     return null;
   }
 

@@ -5,12 +5,14 @@ import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
 import com.meongmory.meongmory.global.response.ResponseCustom;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "diary", description = "DIARY API")
 @RestController
+@RequestMapping(value = "/diaries")
 @RequiredArgsConstructor
-@RequestMapping("/diaries")
 public class DiaryController {
 
   private final DiaryService diaryService;

@@ -21,6 +21,10 @@ public class Pet extends BaseEntity {
     @JoinColumn(name="animalId")
     private Animal animal;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name="familyId")
+    private Family family;
+
     private String name;
 
     @Enumerated(EnumType.STRING)

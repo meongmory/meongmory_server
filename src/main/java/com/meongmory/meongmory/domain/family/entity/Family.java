@@ -24,9 +24,6 @@ public class Family extends BaseEntity {
     @OneToMany(mappedBy = "family", cascade = CascadeType.ALL)
     private List<Pet> pets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "family", cascade = CascadeType.ALL)
-    private List<Diary> diaries = new ArrayList<>();
-
     private String familyInviteCode;
 
     private String friendInviteCode;

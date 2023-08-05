@@ -1,6 +1,5 @@
 package com.meongmory.meongmory.domain.diary.entity;
 
-import com.meongmory.meongmory.domain.family.entity.Family;
 import com.meongmory.meongmory.domain.family.entity.Pet;
 import com.meongmory.meongmory.global.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -9,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @Getter
@@ -22,9 +23,8 @@ public class Diary extends BaseEntity {
     @JoinColumn(name="petId")
     private Pet pet;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="familyId")
-    private Family family;
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+    private List<DiaryFile> files = new ArrayList<>();
 
     private String title;
     private String content;

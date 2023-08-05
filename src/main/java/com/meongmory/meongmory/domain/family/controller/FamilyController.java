@@ -1,4 +1,4 @@
-package com.meongmory.meongmory.domain.family;
+package com.meongmory.meongmory.domain.family.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

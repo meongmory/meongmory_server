@@ -5,6 +5,7 @@ import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
 import com.meongmory.meongmory.global.response.ResponseCustom;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +22,16 @@ public class DiaryController {
   @GetMapping("/{familyId}")
   public ResponseCustom<GetDiariesRes> getDiaries(
           @PathVariable("familyId") Long familyId,
-          @RequestParam Long userId
+          @RequestParam Long userId,
+          @RequestParam Long petId,
+          @RequestParam String sortType
   )
   {
-    return ResponseCustom.OK(diaryService.getDiaries(userId, familyId));
+    return ResponseCustom.OK(diaryService.getDiaries(userId, familyId, petId, sortType));
   }
 
   @ResponseBody
-  @GetMapping("/{diaryId}")
+  @GetMapping("/detail/{diaryId}")
   public ResponseCustom<DetailDiaryRes> detailDiary(
           @PathVariable("diaryId") Long diaryId,
           @RequestParam Long userId

@@ -1,6 +1,11 @@
 package com.meongmory.meongmory.global.config;
 
 
+import com.fasterxml.classmate.TypeResolver;
+import com.meongmory.meongmory.global.exception.BaseException;
+import com.meongmory.meongmory.global.exception.BaseRes;
+import com.meongmory.meongmory.global.exception.BaseResponseCode;
+import com.meongmory.meongmory.global.response.ResponseCustom;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +28,11 @@ public class SwaggerConfig {
 
 
     @Bean
-    public Docket api(){
+    public Docket api(TypeResolver typeResolver){
         return new Docket(DocumentationType.SWAGGER_2)
+                .additionalModels(
+                        typeResolver.resolve(BaseRes.class)
+                )
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())

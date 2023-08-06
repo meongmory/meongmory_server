@@ -4,6 +4,11 @@ import org.springframework.http.HttpStatus;
 
 public enum BaseResponseCode {
     SUCCESS(HttpStatus.OK, "요청에 성공했습니다."),
+
+
+    // cs
+    INVALID_NOTICE_ID(HttpStatus.BAD_REQUEST, "존재하지 않는 공지사항입니다."),
+
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "id에 해당하는 유저가 존재하지 않습니다."),
     FAMILY_NOT_FOUND(HttpStatus.NOT_FOUND, "id에 해당하는 가족이 존재하지 않습니다."),
     FAMILY_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "id에 해당하는 가족 구성원이 존재하지 않습니다."),

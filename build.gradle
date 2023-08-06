@@ -29,6 +29,7 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 //	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
 //	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
@@ -39,6 +40,9 @@ dependencies {
 
 	//sms
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
+	//redis
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'

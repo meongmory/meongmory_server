@@ -18,15 +18,18 @@ public class User extends BaseEntity {
     private String nickname;
     private String phone;
     private Boolean marketing;
+    private String image;
+
 
     @Enumerated(EnumType.STRING)
     private License license;
 
     @Builder
-    public User(String nickname, String phone, Boolean marketing, License license) {
+    public User(String nickname, String phone, Boolean marketing, License license,String image) {
         this.nickname=nickname;
         this.phone=phone;
         this.marketing=marketing;
         this.license=license;
+        this.image=image;
     }
 }

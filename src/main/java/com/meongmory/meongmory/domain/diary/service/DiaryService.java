@@ -5,7 +5,7 @@ import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 
 public interface DiaryService {
-  GetDiariesRes getDiaries(Long userId, Long familyId, Long petId, String sortType);
+  GetDiariesRes getDiaries(Long userId, Long petId, String sortType);
 
   DetailDiaryRes detailDiary(Long userId, Long diaryId);
 

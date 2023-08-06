@@ -34,13 +34,13 @@ public class DiaryServiceImpl implements DiaryService {
   private final DiaryAssembler diaryAssembler;
 
   @Override
-  public GetDiariesRes getDiaries(Long userId, Long familyId, Long petId, String sortType)
+  public GetDiariesRes getDiaries(Long userId, Long petId, String sortType)
   {
     User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
-    Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
-    FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
     Pet pet = petRepository.findByPetIdAndIsEnable(petId, true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND));
-    List<Diary> inScopeDiaries = diaryAssembler.filterDiariesByMemberType(diaryRepository.findByPetAndIsEnable(pet, true), familyMember.getType());
+    Family family = familyRepository.findByFamilyIdAndIsEnable(pet.getFamily().getFamilyId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+    FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+    List<Diary> inScopeDiaries = diaryAssembler.filteredDiariesByScope(diaryRepository.findByPetAndIsEnable(pet, true), familyMember.getType());
     return GetDiariesRes.toDto(inScopeDiaries, SortType.getSortTypeByName(sortType));
   }
 

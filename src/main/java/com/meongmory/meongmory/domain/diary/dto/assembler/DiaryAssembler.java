@@ -12,7 +12,7 @@ import java.util.List;
 public class DiaryAssembler {
 
 
-  public List<Diary> filterDiariesByMemberType(List<Diary> diaries, MemberType type) {
+  public List<Diary> filteredDiariesByScope(List<Diary> diaries, MemberType type) {
     List<Diary> inScopeDiaries = new ArrayList<>();
     for (Diary diary : diaries) {
       if(checkScope(diary.getScope(), type)) inScopeDiaries.add(diary);

@@ -28,15 +28,14 @@ public class DiaryController {
           @ApiResponse(responseCode = "200", description = "조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GetDiariesRes.class))}),
   })
   @ResponseBody
-  @GetMapping("/{familyId}")
+  @GetMapping("/{petId}")
   public ResponseCustom<GetDiariesRes> getDiaries(
-          @Parameter(description = "가족 id") @PathVariable("familyId") Long familyId,
           @Parameter(description = "유저 id") @RequestParam Long userId,
-          @Parameter(description = "반려동물 id") @RequestParam Long petId,
+          @Parameter(description = "반려동물 id") @PathVariable(name = "petId") Long petId,
           @Parameter(description = "정렬 형식 ('갤러리형식' or '리스트형식')") @RequestParam String sortType
   )
   {
-    return ResponseCustom.OK(diaryService.getDiaries(userId, familyId, petId, sortType));
+    return ResponseCustom.OK(diaryService.getDiaries(userId, petId, sortType));
   }
 
   @ResponseBody

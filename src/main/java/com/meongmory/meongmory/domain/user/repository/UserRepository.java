@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findByUserIdAndIsEnable(Long userId, Boolean isEnable);
+  Optional<User> findByPhone(String phone);
 }

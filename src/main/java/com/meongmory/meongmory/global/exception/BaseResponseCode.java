@@ -10,7 +10,10 @@ public enum BaseResponseCode {
     PET_NOT_FOUND(HttpStatus.NOT_FOUND, "id에 해당하는 반려동물이 존재하지 않습니다."),
     SORT_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "SortType을 찾을 수 없습니다."),
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "id에 해당하는 일기가 존재하지 않습니다."),
-    INVALID_SCOPE(HttpStatus.FORBIDDEN, "해당 일기를 볼 수 있는 권한이 없습니다.");
+    INVALID_SCOPE(HttpStatus.FORBIDDEN, "해당 일기를 볼 수 있는 권한이 없습니다."),
+    ALREADY_PHONENUM(HttpStatus.BAD_REQUEST, "이미 존재하는 번호입니다."),
+    TOKEN_NOT_VALID(HttpStatus.BAD_REQUEST, "해당 토큰은 유효하지 않습니다."),
+    TOKEN_EXPIRATION(HttpStatus.BAD_REQUEST, "토큰이 만료되었습니다.");
 
     private final HttpStatus status;
     private final String message;

@@ -7,6 +7,7 @@ import com.meongmory.meongmory.global.exception.BaseRes;
 import com.meongmory.meongmory.global.exception.BaseResponseCode;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -16,8 +17,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableSwagger2

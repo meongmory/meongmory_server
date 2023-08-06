@@ -22,7 +22,7 @@ public class NotificationService {
     private final NotificationAssembler notificationAssembler;
 
     public GetNotificationsRes getNotifications(Long userId) {
-        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.NOT_FOUND_USER));
+        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
         List<Notification> notificationList = notificationRepository.findByUserAndIsEnableOrderByCreatedAtDesc(user, true);
         return notificationAssembler.toGetNotificationsDto(notificationList);
     }

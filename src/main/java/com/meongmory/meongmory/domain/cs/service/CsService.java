@@ -33,17 +33,15 @@ public class CsService {
 
     @Transactional
     public void createInquiry(long userId, CreateInquiryReq request) {
-        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.NOT_FOUND_USER));
+        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
         Inquiry inquiry = csAssembler.toInquiry(user, request);
         inquiryRepository.save(inquiry);
     }
-}
 
     public GetNoticeDetailRes getNoticeDetail(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeIdAndIsEnable(noticeId, true).orElseThrow(() -> new BaseException(BaseResponseCode.INVALID_NOTICE_ID));
         return csAssembler.toGetNoticeDetailResDto(notice);
     }
-}
 
     public GetNoticesRes getNotices() {
         List<Notice> noticeList = noticeRepository.findAllByIsEnableOrderByCreatedAt(true);

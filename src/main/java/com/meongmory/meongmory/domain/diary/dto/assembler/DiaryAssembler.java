@@ -4,11 +4,12 @@ import com.meongmory.meongmory.domain.diary.entity.Diary;
 import com.meongmory.meongmory.domain.diary.entity.Scope;
 import com.meongmory.meongmory.domain.family.entity.MemberType;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
+@Component
 public class DiaryAssembler {
 
 
@@ -20,7 +21,7 @@ public class DiaryAssembler {
     return inScopeDiaries;
   }
 
-  private boolean checkScope(Scope scope, MemberType type) {
+  public boolean checkScope(Scope scope, MemberType type) {
     return scope.name().split("_")[1].equals(type.name());
   }
 }

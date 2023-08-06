@@ -4,6 +4,7 @@ import com.meongmory.meongmory.domain.diary.dto.request.RecordDiaryReq;
 import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
+import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,11 +39,15 @@ public class DiaryController {
     return ResponseCustom.OK(diaryService.getDiaries(userId, petId, sortType));
   }
 
+  @Operation(summary = "다이어리 상세 조회", description = "다이어리를 상세 조회한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = DetailDiaryRes.class))}),
+  })
   @ResponseBody
-  @GetMapping("/detail/{diaryId}")
+  @GetMapping("/details/{diaryId}")
   public ResponseCustom<DetailDiaryRes> detailDiary(
-          @PathVariable("diaryId") Long diaryId,
-          @RequestParam Long userId
+          @Parameter(description = "다이어리 id") @PathVariable("diaryId") Long diaryId,
+          @Parameter(description = "유저 id") @RequestParam Long userId
   )
   {
     return ResponseCustom.OK(diaryService.detailDiary(userId, diaryId));

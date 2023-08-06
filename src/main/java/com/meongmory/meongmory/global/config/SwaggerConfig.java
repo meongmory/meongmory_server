@@ -1,7 +1,8 @@
 package com.meongmory.meongmory.global.config;
 
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import com.fasterxml.classmate.TypeResolver;
+import com.meongmory.meongmory.global.exception.BaseRes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -12,8 +13,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Arrays;
-
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -23,8 +22,11 @@ public class SwaggerConfig {
 
 
     @Bean
-    public Docket api(){
+    public Docket api(TypeResolver typeResolver){
         return new Docket(DocumentationType.SWAGGER_2)
+                .additionalModels(
+                        typeResolver.resolve(BaseRes.class)
+                )
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())

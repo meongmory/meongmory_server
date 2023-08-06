@@ -1,4 +1,4 @@
-package com.meongmory.meongmory.domain.cs;
+package com.meongmory.meongmory.domain.cs.entity;
 
 import com.meongmory.meongmory.global.entity.BaseEntity;
 import lombok.AccessLevel;

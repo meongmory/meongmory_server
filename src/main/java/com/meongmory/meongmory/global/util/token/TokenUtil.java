@@ -1,9 +1,10 @@
-package com.meongmory.meongmory.global.util;
+package com.meongmory.meongmory.global.util.token;
 
 
 import com.meongmory.meongmory.domain.user.entity.User;
 import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.exception.BaseResponseCode;
+import com.meongmory.meongmory.global.util.redis.RedisTemplateService;
 import io.jsonwebtoken.*;
 import io.netty.handler.codec.compression.CompressionException;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class TokenUtil {
         REFRESH,
         ACCESS
     }
+    private final RedisTemplateService redisTemplateService;
 
     public static String accessKeyId;
     public static String secretKey;
@@ -119,7 +121,7 @@ public class TokenUtil {
                 .setExpiration(ext)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
-//        redisTemplateService.setUserRefreshToken(userIdx.toString(), tokenType + ONE_BLOCK + refreshToken);
+        redisTemplateService.setUserRefreshToken(userId.toString(), tokenType + ONE_BLOCK + refreshToken);
         return tokenType + ONE_BLOCK + refreshToken;
     }
 
@@ -154,7 +156,7 @@ public class TokenUtil {
                 .setExpiration(ext)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
-//        redisTemplateService.setUserRefreshToken(userIdx.toString(), tokenType + ONE_BLOCK + refreshToken);
+        redisTemplateService.setUserRefreshToken(userId.toString(), tokenType + ONE_BLOCK + refreshToken);
         return tokenType + ONE_BLOCK + refreshToken;
     }
 
@@ -234,15 +236,15 @@ public class TokenUtil {
         return null;
     }
 
-//    @Transactional
-//    public String accessExpiration(Long userIdx) {
-//        String userRefreshToken = redisTemplateService.getUserRefreshToken(userIdx.toString());
-//        if (userRefreshToken == null) throw new TokenExpirationException();
-//        String refreshNickname = getNicknameFromFullToken(userRefreshToken);
-//        if (refreshNickname.isEmpty()) throw new TokenExpirationException();
-//
-//        //토큰이 만료되었을 경우.
-//        return createAccessToken(userIdx, refreshNickname);
-//    }
+    @Transactional
+    public String accessExpiration(Long userIdx) {
+        String userRefreshToken = redisTemplateService.getUserRefreshToken(userIdx.toString());
+        if (userRefreshToken == null) throw new BaseException(BaseResponseCode.TOKEN_EXPIRATION);
+        String refreshNickname = getNicknameFromFullToken(userRefreshToken);
+        if (refreshNickname.isEmpty()) throw new BaseException(BaseResponseCode.TOKEN_EXPIRATION);
+
+        //토큰이 만료되었을 경우.
+        return createAccessToken(userIdx, refreshNickname);
+    }
 
 }

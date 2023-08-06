@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @Getter
@@ -20,6 +22,9 @@ public class Diary extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="petId")
     private Pet pet;
+
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+    private List<DiaryFile> files = new ArrayList<>();
 
     private String title;
     private String content;

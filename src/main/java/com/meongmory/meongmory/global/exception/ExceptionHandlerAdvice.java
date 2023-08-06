@@ -14,7 +14,7 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(BaseException.class)
     protected ResponseEntity<BaseRes> handleBaseException(BaseException e) {
         return ResponseEntity.status(e.getBaseResponseCode().getStatus())
-                .body(new BaseRes(e.getBaseResponseCode().getStatus().value(), e.getBaseResponseCode().getMessage()));
+                .body(new BaseRes(e.getBaseResponseCode().getStatus().value(), e.getBaseResponseCode().getMessage(), e.getBaseResponseCode().getCode()));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -22,6 +22,6 @@ public class ExceptionHandlerAdvice {
     protected ResponseEntity<BaseRes> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         Objects.requireNonNull(e.getFieldError());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new BaseRes(HttpStatus.BAD_REQUEST.value(), String.format("%s", e.getFieldError().getDefaultMessage())));
+                .body(new BaseRes(HttpStatus.BAD_REQUEST.value(), String.format("%s", e.getFieldError().getDefaultMessage()), e.getFieldError().getCode()));
     }
 }

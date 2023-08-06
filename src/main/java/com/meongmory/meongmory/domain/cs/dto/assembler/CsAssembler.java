@@ -25,6 +25,8 @@ public class CsAssembler {
                 .user(user)
                 .email(request.getEmail())
                 .content(request.getContent())
+                .build();
+    }
 
     public GetNoticeDetailRes toGetNoticeDetailResDto(Notice notice) {
         return GetNoticeDetailRes.builder()
@@ -32,6 +34,7 @@ public class CsAssembler {
                 .comment(notice.getComment())
                 .date(notice.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .build();
+    }
 
     public GetNoticesRes toGetNoticesResDto(List<Notice> noticeList) {
         return GetNoticesRes.builder()

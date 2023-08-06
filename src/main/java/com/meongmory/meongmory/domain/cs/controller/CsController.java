@@ -48,10 +48,6 @@ public class CsController {
         return ResponseCustom.OK();
     }
 
-
-
-}
-
     @GetMapping("/notices/{noticeId}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "공지사항 상세 조회 성공", content = @Content(schema = @Schema(implementation = GetNoticeDetailRes.class))),
@@ -63,14 +59,14 @@ public class CsController {
         return ResponseCustom.OK(csService.getNoticeDetail(noticeId));
     }
 
-
     @GetMapping("/notices")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "공지사항 목록 조회 성공", content = @Content(schema = @Schema(implementation = GetNoticesRes.class)))
     })
     @Operation(summary = "공지사항 목록 조회", description = "공지사항 전체 목록을 조회합니다.")
     public ResponseCustom<GetNoticesRes> getNotices() {
-        return ResponseCustom.OK(csService.getNotices());
+//        return ResponseCustom.OK(csService.getNotices());
+        return null;
     }
 
 }

@@ -1,24 +1,16 @@
 package com.meongmory.meongmory.global.exception;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class BaseRes {
-
     @Schema(description = "상태 코드", allowableValues = {"400", "404", "500"})
-    private final int status;
+    public final int status;
     @Schema(description = "상태 메시지")
-    private final String message;
-
-    public BaseRes(int status, String message) {
-        this.status = status;
-        this.message = message;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
+    public final String message;
+    @Schema(description = "코드")
+    public final String code;
 }

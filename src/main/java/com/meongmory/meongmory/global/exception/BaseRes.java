@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class BaseRes {
 
-    @Schema(description = "상태 코드")
+    @Schema(description = "상태 코드", allowableValues = {"400", "404", "500"})
     private final int status;
     @Schema(description = "상태 메시지")
     private final String message;

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @Getter
@@ -18,6 +20,9 @@ public class Family extends BaseEntity {
     private Long familyId;
 
     private String name;
+
+    @OneToMany(mappedBy = "family", cascade = CascadeType.ALL)
+    private List<Pet> pets = new ArrayList<>();
 
     private String familyInviteCode;
 

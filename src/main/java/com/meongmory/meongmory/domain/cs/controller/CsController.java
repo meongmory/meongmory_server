@@ -1,6 +1,8 @@
 package com.meongmory.meongmory.domain.cs.controller;
 
+
 import com.meongmory.meongmory.domain.cs.dto.request.CreateInquiryReq;
+import com.meongmory.meongmory.domain.cs.dto.response.GetNoticeDetailRes;
 import com.meongmory.meongmory.domain.cs.service.CsService;
 import com.meongmory.meongmory.global.exception.BaseRes;
 import com.meongmory.meongmory.global.response.ResponseCustom;
@@ -17,12 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import com.meongmory.meongmory.domain.cs.dto.response.GetNoticesRes;
+import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
+@Api(tags = "CS API")
 @RestController
 @RequestMapping(value = "/cs")
 @RequiredArgsConstructor
 public class CsController {
 
     private final CsService csService;
+
 
     @PostMapping("/inquires")
     @ApiResponses(value = {
@@ -40,3 +51,27 @@ public class CsController {
 
 
 }
+
+    @GetMapping("/notices/{noticeId}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "공지사항 상세 조회 성공", content = @Content(schema = @Schema(implementation = GetNoticeDetailRes.class))),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 공지사항", content = @Content(schema = @Schema(implementation = BaseRes.class)))
+    })
+
+    @Operation(summary = "공지사항 상세 조회", description = "공지사항 Id를 이용해 상세 내용을 조회합니다.")
+    public ResponseCustom<GetNoticeDetailRes> getNoticeDetail(@Parameter(description = "공지사항 Id") @PathVariable Long noticeId) {
+        return ResponseCustom.OK(csService.getNoticeDetail(noticeId));
+    }
+
+
+    @GetMapping("/notices")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "공지사항 목록 조회 성공", content = @Content(schema = @Schema(implementation = GetNoticesRes.class)))
+    })
+    @Operation(summary = "공지사항 목록 조회", description = "공지사항 전체 목록을 조회합니다.")
+    public ResponseCustom<GetNoticesRes> getNotices() {
+        return ResponseCustom.OK(csService.getNotices());
+    }
+
+}
+

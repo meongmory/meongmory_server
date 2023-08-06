@@ -24,6 +24,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private License license;
 
+    private String deviceToken;
+
     @Builder
     public User(String nickname, String phone, Boolean marketing, License license,String image) {
         this.nickname=nickname;

@@ -19,10 +19,6 @@ public class FileRes {
   }
 
   public static FileRes toDto(DiaryFile diaryFile) {
-//    FileRes fileRes = new FileRes();
-//    fileRes.fileKey = diaryFile.getFileKey();
-//    fileRes.fileType = diaryFile.getType().name();
-//    return fileRes;
     return FileRes.builder()
         .fileKey(diaryFile.getFileKey())
         .fileType(diaryFile.getType().name())

@@ -1,6 +1,5 @@
-package com.meongmory.meongmory.domain.notification;
+package com.meongmory.meongmory.domain.notification.entity;
 
-import com.meongmory.meongmory.domain.diary.entity.Diary;
 import com.meongmory.meongmory.domain.user.entity.User;
 import com.meongmory.meongmory.global.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -22,13 +21,15 @@ public class Notification extends BaseEntity {
     @JoinColumn(name="userId")
     private User user;
 
-    private String title;
+    @Enumerated(EnumType.STRING)
+    private NotificationType type;
+
     private String content;
 
     @Builder
-    public Notification(User user, String title, String content) {
+    public Notification(User user, NotificationType type, String content) {
         this.user = user;
-        this.title=title;
-        this.content=content;
+        this.type = type;
+        this.content = content;
     }
 }

@@ -33,7 +33,7 @@ public class CsController {
     @Operation(summary = "문의하기", description = "이메일 및 내용을 입력 받아 문의사항을 저장합니다.")
     public ResponseCustom createInquiry(@RequestBody @Valid CreateInquiryReq request) {
         // TODO 토큰 받아오기
-        csService.createInquiry(10L, request);
+        csService.createInquiry(1L, request);
         return ResponseCustom.OK();
     }
 

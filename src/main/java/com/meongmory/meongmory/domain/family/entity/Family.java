@@ -6,10 +6,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.meongmory.meongmory.global.util.Constant.Family.RANDOM_CODE_SIZE;
 
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @Getter
@@ -33,5 +36,13 @@ public class Family extends BaseEntity {
         this.name=name;
         this.familyInviteCode = familyInviteCode;
         this.friendInviteCode = friendInviteCode;
+    }
+
+    public static Family toEntity(String name) {
+        return Family.builder()
+                .name(name)
+                .familyInviteCode(RandomStringUtils.random(RANDOM_CODE_SIZE, true, true))
+                .friendInviteCode(RandomStringUtils.random(RANDOM_CODE_SIZE, true, true))
+                .build();
     }
 }

@@ -1,6 +1,5 @@
 package com.meongmory.meongmory.domain.family.service;
 
-import com.meongmory.meongmory.domain.family.dto.assembler.FamilyAssembler;
 import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyReq;
 import com.meongmory.meongmory.domain.family.entity.Family;
 import com.meongmory.meongmory.domain.family.entity.FamilyMember;
@@ -31,8 +30,8 @@ public class FamilyService {
         if(familyMemberRepository.existsByUserAndTypeAndIsEnable(user, MemberType.OWNER, true)) throw new BaseException(BaseResponseCode.FAMILY_ALREADY_HAD);
 
         // 가족 생성
-        Family family = familyAssembler.toEntity(createFamilyReq.getName());
-        FamilyMember owner = familyAssembler.toMemberEntity(user, family, MemberType.OWNER);
+        Family family = Family.toEntity(createFamilyReq.getName());
+        FamilyMember owner = FamilyMember.toEntity(user, family, MemberType.OWNER);
         familyRepository.save(family);
         familyMemberRepository.save(owner);
     }

@@ -6,6 +6,7 @@ import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
 import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.response.ResponseCustom;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "diary", description = "DIARY API")
+@Api(tags = "DIARY API")
 @RestController
 @RequestMapping(value = "/diaries")
 @RequiredArgsConstructor

@@ -11,13 +11,12 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class CreateInquiryReq {
-
-    @NotBlank(message = "이메일을 입력해 주세요.")
-    @Email(message = "올바른 이메일 형식으로 입력해 주세요.")
+    @NotBlank(message = "G0002")
+    @Email(message = "G0003")
     @Schema(description="답변 받을 이메일", example = "meong@mju.ac.kr")
     private String email;
 
-    @NotNull(message = "내용을 입력해 주세요.")
+    @NotNull(message = "G0004")
     @Schema(description="내용", example = "투자하려고 연락 남깁니다.")
     private String content;
 }

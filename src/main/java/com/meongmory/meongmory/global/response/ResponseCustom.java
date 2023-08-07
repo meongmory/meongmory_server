@@ -2,6 +2,7 @@ package com.meongmory.meongmory.global.response;
 
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.meongmory.meongmory.global.exception.BaseResponseCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -16,10 +17,14 @@ public class ResponseCustom<T>{
 
     @Schema(description = "HTTP 상태")
     private final int status;
+
     @Schema(description = "상태 코드")
     private final String code;
+
     @Schema(description = "상태 메시지")
     private final String message;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "응답 데이터")
     private T data;
 

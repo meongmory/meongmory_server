@@ -1,5 +1,6 @@
 package com.meongmory.meongmory.domain.diary.entity;
 
+import com.meongmory.meongmory.domain.family.entity.Family;
 import com.meongmory.meongmory.domain.family.entity.Pet;
 import com.meongmory.meongmory.global.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -11,32 +12,41 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class Diary extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long diaryId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long diaryId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="petId")
-    private Pet pet;
+  @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+  private List<DiaryFile> files = new ArrayList<>();
 
-    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
-    private List<DiaryFile> files = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name="familyId")
+  private Family family;
 
-    private String title;
-    private String content;
+  private String title;
+  private String content;
 
-    @Enumerated(EnumType.STRING)
-    private Scope scope;
+  @Enumerated(EnumType.STRING)
+  private Scope scope;
 
-    @Builder
-    public Diary(Pet pet, String title, String content, Scope scope) {
-        this.pet = pet;
-        this.title=title;
-        this.content=content;
-        this.scope=scope;
-    }
+  @Builder
+  public Diary(Family family, String title, String content, Scope scope) {
+    this.family = family;
+    this.title = title;
+    this.content = content;
+    this.scope = scope;
+  }
+
+  public static Diary toEntity(Family family, String title, String content, Scope scope) {
+    return Diary.builder()
+            .family(family)
+            .title(title)
+            .content(content)
+            .scope(scope)
+            .build();
+  }
 }

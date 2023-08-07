@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
-  List<Diary> findByPetAndIsEnable(Pet pet, Boolean isEnable);
+//  List<Diary> findByPetAndIsEnable(Pet pet, Boolean isEnable);
 
   Optional<Diary> findByDiaryIdAndIsEnable(Long diaryId, Boolean isEnable);
 }

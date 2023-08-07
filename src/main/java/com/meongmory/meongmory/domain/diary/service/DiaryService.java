@@ -9,7 +9,7 @@ public interface DiaryService {
 
   DetailDiaryRes detailDiary(Long userId, Long diaryId);
 
-  Long recordDiary(RecordDiaryReq recordDiaryReq);
+  Long recordDiary(Long userId, RecordDiaryReq recordDiaryReq);
 
   Long recordComment( Long userId, Long diaryId, String comment);
 

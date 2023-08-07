@@ -14,7 +14,7 @@ public class RecordDiaryReq {
   private Long familyId;
 
   @NotBlank(message = "최소 한 마리 이상의 반려동물의 아이디를 입력해주세요.")
-  @Schema(description = "반려동물 아이디 리스트", example = "[1, 2, 3]")
+  @Schema(description = "반려동물 아이디 리스트", example = "[{\"petId\" : 1}, {\"petId\" : 2}]")
   private List<RecordDiaryPetReq> pets;
 
   @NotBlank(message = "최소 한 개 이상의 파일을 입력해주세요.")

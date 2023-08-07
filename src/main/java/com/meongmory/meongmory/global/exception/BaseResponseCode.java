@@ -4,11 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum BaseResponseCode {
     // success
     SUCCESS("S0001", HttpStatus.OK, "요청에 성공했습니다."),
+
+    // global
+    BAD_REQUEST("G0001", HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
+    EMAIL_NULL("G0002", HttpStatus.BAD_REQUEST, "이메일을 입력해 주세요."),
+    EMAIL_INVALID("G0003", HttpStatus.BAD_REQUEST, "올바른 이메일 형식으로 입력해 주세요."),
+    CONTENT_NULL("G0004", HttpStatus.BAD_REQUEST, "내용을 입력해 주세요."),
 
     // cs
     INVALID_NOTICE_ID("C0001", HttpStatus.BAD_REQUEST, "존재하지 않는 공지사항입니다."),
@@ -38,5 +46,11 @@ public enum BaseResponseCode {
     public final String code;
     public final HttpStatus status;
     public final String message;
+
+    public static BaseResponseCode findByCode(String code) {
+        return Arrays.stream(BaseResponseCode.values())
+                .filter(b -> b.getCode().equals(code))
+                .findAny().orElseThrow(() -> new BaseException(BAD_REQUEST));
+    }
 
 }

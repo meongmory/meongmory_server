@@ -3,7 +3,6 @@ package com.meongmory.meongmory.domain.user.controller;
 import com.meongmory.meongmory.domain.user.dto.request.SignUpUserReq;
 import com.meongmory.meongmory.domain.user.dto.response.SignUpUserRes;
 import com.meongmory.meongmory.domain.user.service.UserService;
-import com.meongmory.meongmory.global.exception.BaseRes;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,7 +21,7 @@ public class UserController {
   @Operation(summary = "회원가입", description = "회원가입을 진행한다.")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "회원가입 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = SignUpUserRes.class))}),
-          @ApiResponse(responseCode = "400", description = "회원가입 실패", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))}),
+          @ApiResponse(responseCode = "400", description = "회원가입 실패", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
   })
   @PostMapping("/signUp")
   public ResponseCustom<SignUpUserRes> signUp(@RequestBody SignUpUserReq signUpUserReq

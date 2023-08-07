@@ -13,6 +13,7 @@ import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.exception.BaseResponseCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,8 @@ public class FamilyService {
     private final FamilyRepository familyRepository;
     private final FamilyMemberRepository familyMemberRepository;
     private final FamilyAssembler familyAssembler;
+
+    @Transactional
     public void createFamily(CreateFamilyReq createFamilyReq, Long userId) {
         User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
 

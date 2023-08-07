@@ -20,7 +20,6 @@ public class FamilyService {
     private final UserRepository userRepository;
     private final FamilyRepository familyRepository;
     private final FamilyMemberRepository familyMemberRepository;
-    private final FamilyAssembler familyAssembler;
 
     @Transactional
     public void createFamily(CreateFamilyReq createFamilyReq, Long userId) {

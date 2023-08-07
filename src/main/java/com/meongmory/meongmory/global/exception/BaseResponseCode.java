@@ -38,7 +38,7 @@ public enum BaseResponseCode {
     PET_NOT_FOUND("P0001", HttpStatus.NOT_FOUND, "id에 해당하는 반려동물이 존재하지 않습니다."),
 
     // animal
-    ANIMAL_NOT_FOUND("A0001", HttpStatus.NOT_FOUND, "반려동물의 종류를 확인해주세요."),
+    ANIMAL_NOT_FOUND("A0001", HttpStatus.BAD_REQUEST, "반려동물의 종류를 확인해주세요."),
 
     // diary
     SORT_TYPE_NOT_FOUND("D0001", HttpStatus.NOT_FOUND, "SortType을 찾을 수 없습니다."),

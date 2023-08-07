@@ -47,7 +47,7 @@ public class DiaryController {
           @ApiResponse(responseCode = "403", description = "(D0003) 유효하지 않은 다이어리 접근 권한", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
   })
   @ResponseBody
-  @GetMapping("/details/{diaryId}")
+  @GetMapping("/detail/{diaryId}")
   public ResponseCustom<DetailDiaryRes> detailDiary(
           @Parameter(description = "다이어리 id") @PathVariable("diaryId") Long diaryId,
           @Parameter(description = "유저 id") @RequestParam Long userId

@@ -53,12 +53,14 @@ public class DiaryController {
     return ResponseCustom.OK(diaryService.detailDiary(userId, diaryId));
   }
 
+  @ResponseBody
   @PostMapping("")
   public ResponseCustom<Long> recordDiary(
+          @RequestParam Long userId,
           RecordDiaryReq recordDiaryReq
   )
   {
-    return ResponseCustom.OK(diaryService.recordDiary(recordDiaryReq));
+    return ResponseCustom.OK(diaryService.recordDiary(userId, recordDiaryReq));
   }
 
   @PostMapping("/{diaryId}/comment")

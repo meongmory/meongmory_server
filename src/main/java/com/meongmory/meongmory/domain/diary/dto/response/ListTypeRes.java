@@ -26,7 +26,7 @@ public class ListTypeRes {
   public static ListTypeRes toDto(Diary diary) {
     return ListTypeRes.builder()
         .diaryId(diary.getDiaryId())
-        .petName(diary.getPet().getName())
+//        .petName(diary.getPet().getName())
         .uploadedAt(diary.getCreatedAt())
         .files(diary.getFiles().stream().map(FileRes::toDto).collect(Collectors.toList()))
         .build();

@@ -40,7 +40,9 @@ public enum BaseResponseCode {
     // diary
     SORT_TYPE_NOT_FOUND("D0001", HttpStatus.NOT_FOUND, "SortType을 찾을 수 없습니다."),
     DIARY_NOT_FOUND("D0002", HttpStatus.NOT_FOUND, "id에 해당하는 일기가 존재하지 않습니다."),
-    INVALID_SCOPE("D0003", HttpStatus.FORBIDDEN, "해당 일기를 볼 수 있는 권한이 없습니다."),;
+    INVALID_SCOPE("D0003", HttpStatus.FORBIDDEN, "해당 일기를 볼 수 있는 권한이 없습니다."),
+    SCOPE_NOT_FOUND("D0004", HttpStatus.NOT_FOUND ,"존재하지 않는 다이어리 scope 입니다." ),
+    FILETYPE_NOT_FOUND("D0005", HttpStatus.NOT_FOUND , "존재하지 않는 file type 입니다" );
 
     public final String code;
     public final HttpStatus status;

@@ -23,7 +23,7 @@ public class FamilyController {
     @PostMapping("")
     @ResponseBody
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "다이어리 생성 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "200", description = "(S0001)다이어리 생성 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
             @ApiResponse(responseCode = "400", description = "(G0004)잘못된 요청\n (F0003)사용자당 가족 생성은 최대 1개", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
             @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })

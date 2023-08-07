@@ -1,6 +1,5 @@
 package com.meongmory.meongmory.domain.family.entity;
 
-import com.meongmory.meongmory.domain.diary.entity.Diary;
 import com.meongmory.meongmory.domain.user.entity.User;
 import com.meongmory.meongmory.global.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -35,5 +34,13 @@ public class FamilyMember extends BaseEntity {
         this.type=type;
         this.family = family;
         this.user = user;
+    }
+
+    public static FamilyMember toEntity(User user, Family family, MemberType type) {
+        return FamilyMember.builder()
+                .user(user)
+                .family(family)
+                .type(type)
+                .build();
     }
 }

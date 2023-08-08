@@ -81,13 +81,13 @@ public class DiaryController {
     return ResponseCustom.OK(diaryService.recordComment(userId, diaryId, comment));
   }
 
-  @DeleteMapping("/{diaryId}/comment")
-  public ResponseCustom<Long> deleteComment(
-          @PathVariable("diaryId") Long diaryId,
-          @RequestParam Long userId,
-          @RequestParam Long diaryCommentId
-  )
-  {
-    return ResponseCustom.OK(diaryService.deleteComment(userId, diaryId, diaryCommentId));
-  }
+//  @DeleteMapping("/{diaryId}/comment")
+//  public ResponseCustom<Long> deleteComment(
+//          @PathVariable("diaryId") Long diaryId,
+//          @RequestParam Long userId,
+//          @RequestParam Long diaryCommentId
+//  )
+//  {
+//    return ResponseCustom.OK(diaryService.deleteComment(userId, diaryId, diaryCommentId));
+//  }
 }

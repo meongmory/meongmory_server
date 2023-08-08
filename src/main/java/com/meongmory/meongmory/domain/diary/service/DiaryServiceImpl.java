@@ -86,8 +86,8 @@ public class DiaryServiceImpl implements DiaryService {
     return diaryCommentRepository.save(DiaryComment.toEntity(diary, user, comment.getComment())).getDiaryCommentId();
   }
 
-  @Override
-  public Long deleteComment(Long userId, Long diaryId, Long diaryCommentId) {
-    return null;
-  }
+//  @Override
+//  public Long deleteComment(Long userId, Long diaryId, Long diaryCommentId) {
+//    return null;
+//  }
 }

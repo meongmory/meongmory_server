@@ -14,5 +14,5 @@ public interface DiaryService {
 
   Long recordComment( Long userId, Long diaryId, RecordCommentReq comment);
 
-  Long deleteComment(Long userId, Long diaryId, Long diaryCommentId);
+//  Long deleteComment(Long userId, Long diaryId, Long diaryCommentId);
 }

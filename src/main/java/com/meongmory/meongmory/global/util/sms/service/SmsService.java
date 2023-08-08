@@ -68,7 +68,7 @@ public class SmsService {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+this.serviceId+"/messages"), body, SmsSendRes.class);
-        // Redis에 인증번호 저장 (3분 만료시간 설정)
+        // Redis에 인증번호 저장 (1분 만료시간 설정)
         redisTemplateService.setCertificationCode(smsSendReq.getPhone(), certification);
 
         return certification;

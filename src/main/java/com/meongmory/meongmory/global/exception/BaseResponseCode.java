@@ -34,6 +34,7 @@ public enum BaseResponseCode {
     FAMILY_MEMBER_NOT_FOUND("F0002", HttpStatus.NOT_FOUND, "id에 해당하는 가족 구성원이 존재하지 않습니다."),
     FAMILY_ALREADY_HAD("F0003", HttpStatus.BAD_REQUEST, "사용자의 가족 생성은 최대 1개입니다."),
 
+
     // pet
     PET_NOT_FOUND("P0001", HttpStatus.NOT_FOUND, "id에 해당하는 반려동물이 존재하지 않습니다."),
 
@@ -42,7 +43,17 @@ public enum BaseResponseCode {
     DIARY_NOT_FOUND("D0002", HttpStatus.NOT_FOUND, "id에 해당하는 일기가 존재하지 않습니다."),
     INVALID_SCOPE("D0003", HttpStatus.FORBIDDEN, "해당 일기를 볼 수 있는 권한이 없습니다."),
     SCOPE_NOT_FOUND("D0004", HttpStatus.NOT_FOUND ,"존재하지 않는 다이어리 scope 입니다." ),
-    FILETYPE_NOT_FOUND("D0005", HttpStatus.NOT_FOUND , "존재하지 않는 file type 입니다" );
+    FILETYPE_NOT_FOUND("D0005", HttpStatus.NOT_FOUND , "존재하지 않는 file type 입니다" ),
+
+    //sms
+    SMS_NOT_FOUND("SM0001",HttpStatus.BAD_REQUEST,"전화번호를 입력해주세요."),
+    SMS_NUMBER_NOT_FOUND("SM0002",HttpStatus.BAD_REQUEST,"인증번호를 입력해주세요."),
+    SMS_EXPIRATION("SM0003",HttpStatus.BAD_REQUEST,"인증번호 유효시간이 지났거나 잘못 입력했습니다."),
+    SMS_NUBER_INVALID("SM0004",HttpStatus.BAD_REQUEST,"전화번호를 확인해주세요."),
+    SMS_CODE_INVALID("SM0003",HttpStatus.BAD_REQUEST,"인증번호를 확인해주세요.");
+
+
+
 
     public final String code;
     public final HttpStatus status;

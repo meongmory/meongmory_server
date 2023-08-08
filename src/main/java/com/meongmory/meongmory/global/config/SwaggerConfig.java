@@ -5,11 +5,15 @@ import com.fasterxml.classmate.TypeResolver;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 
 
+import com.meongmory.meongmory.global.util.CustomPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.AlternateTypeRule;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
@@ -33,6 +37,9 @@ public class SwaggerConfig {
     @Bean
     public Docket api(TypeResolver typeResolver){
         return new Docket(DocumentationType.SWAGGER_2)
+                .alternateTypeRules(
+                        AlternateTypeRules.newRule(typeResolver.resolve(Pageable.class), typeResolver.resolve(CustomPage.class))
+                )
                 .additionalModels(
                         typeResolver.resolve(ResponseCustom.class)
                 )

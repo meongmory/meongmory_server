@@ -10,6 +10,7 @@ import com.meongmory.meongmory.domain.diary.repository.DiaryFileRepository;
 import com.meongmory.meongmory.domain.diary.repository.DiaryPetRepository;
 import com.meongmory.meongmory.domain.diary.repository.DiaryRepository;
 import com.meongmory.meongmory.domain.family.entity.Family;
+import com.meongmory.meongmory.domain.family.entity.FamilyMember;
 import com.meongmory.meongmory.domain.family.entity.Pet;
 import com.meongmory.meongmory.domain.family.repository.FamilyMemberRepository;
 import com.meongmory.meongmory.domain.family.repository.FamilyRepository;
@@ -41,26 +42,27 @@ public class DiaryServiceImpl implements DiaryService {
   @Override
   public GetDiariesRes getDiaries(Long userId, Long petId, String sortType)
   {
-//    User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
-//    Pet pet = petRepository.findByPetIdAndIsEnable(petId, true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND));
-//    FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(pet.getFamily(), user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
-//    List<Diary> inScopeDiaries = diaryAssembler.filteredDiariesByScope(diaryRepository.findByPetAndIsEnable(pet, true), familyMember.getType());
-//    return GetDiariesRes.toDto(inScopeDiaries, SortType.getSortTypeByName(sortType));
-    return null;
+    User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+    Pet pet = petRepository.findByPetIdAndIsEnable(petId, true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND));
+    FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(pet.getFamily(), user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+
+    List<DiaryPet> diaryPet = diaryPetRepository.findByPetAndIsEnable(pet, true);
+    List<Diary> diaries = diaryPet.stream().map(m -> diaryRepository.findByDiaryIdAndIsEnable(m.getDiary().getDiaryId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.DIARY_NOT_FOUND))).collect(Collectors.toList());
+
+    return GetDiariesRes.toDto(diaryAssembler.filteredDiariesByScope(diaries, familyMember.getType()), SortType.getSortTypeByName(sortType));
   }
 
   @Override
   public DetailDiaryRes detailDiary(Long userId, Long diaryId)
   {
-//    User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
-//    Diary diary = diaryRepository.findByDiaryIdAndIsEnable(diaryId, true).orElseThrow(() -> new BaseException(BaseResponseCode.DIARY_NOT_FOUND));
-//    Pet pet = petRepository.findByPetIdAndIsEnable(diary.getPet().getPetId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND));
-//    FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(pet.getFamily(), user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
-//    List<DiaryComment> comments = diaryCommentRepository.findByDiaryAndIsEnable(diary, true);
-//
-//    if(!diaryAssembler.checkScope(diary.getScope(), familyMember.getType())) throw new BaseException(BaseResponseCode.INVALID_SCOPE);
-//    return DetailDiaryRes.toDto(diary, pet, comments);
-    return null;
+    User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+    Diary diary = diaryRepository.findByDiaryIdAndIsEnable(diaryId, true).orElseThrow(() -> new BaseException(BaseResponseCode.DIARY_NOT_FOUND));
+    FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(diary.getFamily(), user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+
+    List<DiaryComment> comments = diaryCommentRepository.findByDiaryAndIsEnable(diary, true);
+    if(!diaryAssembler.checkScope(diary.getScope(), familyMember.getType())) throw new BaseException(BaseResponseCode.INVALID_SCOPE);
+
+    return DetailDiaryRes.toDto(diary, diary.getFamily().getPets(), comments);
   }
 
   @Override
@@ -69,10 +71,8 @@ public class DiaryServiceImpl implements DiaryService {
     User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
     List<Pet> pets = recordDiaryReq.getPets().stream().map(m -> petRepository.findByPetIdAndIsEnable(m.getPetId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND))).collect(Collectors.toList());
     Family family = familyRepository.findByFamilyIdAndIsEnable(recordDiaryReq.getFamilyId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
-
     Diary diary = diaryRepository.save(Diary.toEntity(family, recordDiaryReq.getTitle(), recordDiaryReq.getContent(), Scope.getScopeByName(recordDiaryReq.getScope())));
     pets.forEach(pet -> diaryPetRepository.save(DiaryPet.toEntity(diary, pet)));
-
     recordDiaryReq.getFiles().stream().map(f -> DiaryFile.toEntity(diary, f.getFileKey(), FileType.getFileTypeByName(f.getFileType()))).forEach(diaryFileRepository::save);
     return diary.getDiaryId();
   }

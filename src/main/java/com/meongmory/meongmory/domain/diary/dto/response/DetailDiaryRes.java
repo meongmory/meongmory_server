@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Data
 public class DetailDiaryRes {
-  private String petName;
+  private List<String> names;
   private LocalDateTime uploadedAt;
   private List<FileRes> files;
   private String content;
@@ -21,17 +21,17 @@ public class DetailDiaryRes {
   private List<CommentRes> comments;
 
   @Builder
-  public DetailDiaryRes(String petName, LocalDateTime uploadedAt, List<FileRes> files, String content, List<CommentRes> comments) {
-    this.petName = petName;
+  public DetailDiaryRes(List<String> names, LocalDateTime uploadedAt, List<FileRes> files, String content, List<CommentRes> comments) {
+    this.names = names;
     this.uploadedAt = uploadedAt;
     this.files = files;
     this.content = content;
     this.comments = comments;
   }
 
-  public static DetailDiaryRes toDto(Diary diary, Pet pet, List<DiaryComment> comments) {
+  public static DetailDiaryRes toDto(Diary diary, List<Pet> pets, List<DiaryComment> comments) {
     return DetailDiaryRes.builder()
-            .petName(pet.getName())
+            .names(pets.stream().map(Pet::getName).collect(Collectors.toList()))
             .uploadedAt(diary.getCreatedAt())
             .files(diary.getFiles().stream().map(FileRes::toDto).collect(Collectors.toList()))
             .content(diary.getContent())

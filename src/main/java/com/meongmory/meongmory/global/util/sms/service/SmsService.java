@@ -53,7 +53,7 @@ public class SmsService {
             return certification;
         }
         List<MessageDto> messages = new ArrayList<>();
-        messages.add(new MessageDto(smsSendReq.getPhone(), "meongmory \n 인증번호: "+certification));
+        messages.add(new MessageDto(smsSendReq.getPhone(), "animori \n 인증번호: "+certification));
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonBody = objectMapper.writeValueAsString(new SmsNaverReq("SMS", this.phone, certification, messages));
         HttpHeaders headers = new HttpHeaders();

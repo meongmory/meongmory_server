@@ -76,7 +76,17 @@ public class FamilyService {
         petRepository.save(pet);
     }
 
+    @Transactional
+    public void deleteFamilyPet(Long familyId, Long petId, Long userId) {
+        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+        FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+        if(familyMember.getType().equals(MemberType.FRIEND)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
 
+        Pet pet = this.petRepository.findByPetIdAndIsEnable(petId, true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND));
+        //todo: cascade 후, isEnable false 가 되는지 확인 필요
+        petRepository.delete(pet);
+    }
 
     // abstract method
     private LocalDate createPetBirthYear(Integer birth){
@@ -84,5 +94,4 @@ public class FamilyService {
     }
 
     private Integer createPetBirthAge(LocalDate localDate){return LocalDate.now().getYear()-localDate.getYear() - 1;}
-
 }

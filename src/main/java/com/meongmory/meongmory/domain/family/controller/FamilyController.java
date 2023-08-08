@@ -75,9 +75,24 @@ public class FamilyController {
     @Operation(summary = "펫 다이어리 반려동물 생성", description = "펫 다이어리(가족) 내 반려동물을 생성합니다.")
     public ResponseCustom postFamilyPet(
             @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId,
-            @RequestBody @Valid CreateFamilyPetReq createFamilyPetReq
-    ){
+            @RequestBody @Valid CreateFamilyPetReq createFamilyPetReq){
         familyService.postFamilyPet(createFamilyPetReq, familyId, 1L);
+        return ResponseCustom.OK();
+    }
+
+    @DeleteMapping("/families/{familyId}/pet/{petId}")
+    @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "(S0001)펫 다이어리(가족) 반려동물 삭제 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "400", description = "(F0004)펫 다이어리 생성 유저/가족만 접근 가능", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n (F0001)존재하지 않은 다이어리(가족)\n (F0002)존재하지 않은 가족 구성원\n (A0002)존재하지 않는 반려동물 품종\n (P0002)존재하지 않는 반려동물 성별 타입\n (P0001)존재하지 않는 반려동물", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
+    })
+    @Operation(summary = "펫 다이어리 반려동물 삭제", description = "펫 다이어리(가족) 내 반려동물을 삭제합니다.")
+    public ResponseCustom deleteFamilyPet(
+            @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId,
+            @Parameter(description = "(Long) 반려동물 Id", example = "1") @PathVariable(value = "petId") Long petId
+    ){
+        familyService.deleteFamilyPet(familyId, petId, 1L);
         return ResponseCustom.OK();
     }
 }

@@ -12,4 +12,8 @@ public class AnimalSpecification {
     public static Specification<Animal> findAnimalType(AnimalType type){
         return ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("animalType"), type));
     }
+
+    public static Specification<Animal> findAnimalIsEnable(Boolean isEnable){
+        return ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isEnable"), isEnable));
+    }
 }

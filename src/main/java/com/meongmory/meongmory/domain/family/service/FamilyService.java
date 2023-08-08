@@ -51,6 +51,7 @@ public class FamilyService {
         if(StringUtils.hasText(searchword)) specAnimal = specAnimal.and(AnimalSpecification.findSearchword(searchword));
         // type 있음
         if(StringUtils.hasText(type)) specAnimal = specAnimal.and(AnimalSpecification.findAnimalType(AnimalType.getAnimalTypeByName(type)));
+        specAnimal = specAnimal.and(AnimalSpecification.findAnimalIsEnable(true));
         return AnimalTypeListRes.toDto(animalRepository.findAll(specAnimal, pageable));
     }
 }

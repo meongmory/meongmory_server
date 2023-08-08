@@ -3,6 +3,7 @@ package com.meongmory.meongmory.domain.diary.controller;
 import com.meongmory.meongmory.domain.diary.dto.request.RecordDiaryReq;
 import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
+import com.meongmory.meongmory.domain.diary.dto.response.RecordCommentReq;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
 import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.response.ResponseCustom;
@@ -15,6 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Tag(name = "diary", description = "DIARY API")
 @RestController
@@ -67,9 +70,9 @@ public class DiaryController {
   public ResponseCustom<Long> recordComment(
           @PathVariable("diaryId") Long diaryId,
           @RequestParam Long userId,
-          @RequestParam String comment
-  )
-  {
+          @Valid @RequestBody RecordCommentReq comment
+  ) {
+
     return ResponseCustom.OK(diaryService.recordComment(userId, diaryId, comment));
   }
 

@@ -4,6 +4,7 @@ import com.meongmory.meongmory.domain.diary.dto.assembler.DiaryAssembler;
 import com.meongmory.meongmory.domain.diary.dto.request.RecordDiaryReq;
 import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
+import com.meongmory.meongmory.domain.diary.dto.response.RecordCommentReq;
 import com.meongmory.meongmory.domain.diary.entity.*;
 import com.meongmory.meongmory.domain.diary.repository.DiaryCommentRepository;
 import com.meongmory.meongmory.domain.diary.repository.DiaryFileRepository;
@@ -78,9 +79,11 @@ public class DiaryServiceImpl implements DiaryService {
   }
 
   @Override
-  public Long recordComment(Long userId, Long diaryId, String comment)
+  public Long recordComment(Long userId, Long diaryId, RecordCommentReq comment)
   {
-    return null;
+    User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+    Diary diary = diaryRepository.findByDiaryIdAndIsEnable(diaryId, true).orElseThrow(() -> new BaseException(BaseResponseCode.DIARY_NOT_FOUND));
+    return diaryCommentRepository.save(DiaryComment.toEntity(diary, user, comment.getComment())).getDiaryCommentId();
   }
 
   @Override

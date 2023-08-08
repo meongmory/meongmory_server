@@ -71,10 +71,8 @@ public class DiaryServiceImpl implements DiaryService {
     User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
     List<Pet> pets = recordDiaryReq.getPets().stream().map(m -> petRepository.findByPetIdAndIsEnable(m.getPetId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND))).collect(Collectors.toList());
     Family family = familyRepository.findByFamilyIdAndIsEnable(recordDiaryReq.getFamilyId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
-
     Diary diary = diaryRepository.save(Diary.toEntity(family, recordDiaryReq.getTitle(), recordDiaryReq.getContent(), Scope.getScopeByName(recordDiaryReq.getScope())));
     pets.forEach(pet -> diaryPetRepository.save(DiaryPet.toEntity(diary, pet)));
-
     recordDiaryReq.getFiles().stream().map(f -> DiaryFile.toEntity(diary, f.getFileKey(), FileType.getFileTypeByName(f.getFileType()))).forEach(diaryFileRepository::save);
     return diary.getDiaryId();
   }

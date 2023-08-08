@@ -3,6 +3,7 @@ package com.meongmory.meongmory.domain.diary.service;
 import com.meongmory.meongmory.domain.diary.dto.request.RecordDiaryReq;
 import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
+import com.meongmory.meongmory.domain.diary.dto.response.RecordCommentReq;
 
 public interface DiaryService {
   GetDiariesRes getDiaries(Long userId, Long petId, String sortType);
@@ -11,7 +12,7 @@ public interface DiaryService {
 
   Long recordDiary(Long userId, RecordDiaryReq recordDiaryReq);
 
-  Long recordComment( Long userId, Long diaryId, String comment);
+  Long recordComment( Long userId, Long diaryId, RecordCommentReq comment);
 
-  Long deleteComment(Long userId, Long diaryId, Long diaryCommentId);
+//  Long deleteComment(Long userId, Long diaryId, Long diaryCommentId);
 }

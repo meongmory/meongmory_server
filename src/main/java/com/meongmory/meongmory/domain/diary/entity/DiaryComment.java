@@ -33,4 +33,12 @@ public class DiaryComment extends BaseEntity {
         this.user = user;
         this.comment=comment;
     }
+
+    public static DiaryComment toEntity(Diary diary, User user, String comment) {
+        return DiaryComment.builder()
+                .diary(diary)
+                .user(user)
+                .comment(comment)
+                .build();
+    }
 }

@@ -3,6 +3,7 @@ package com.meongmory.meongmory.domain.diary.controller;
 import com.meongmory.meongmory.domain.diary.dto.request.RecordDiaryReq;
 import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
+import com.meongmory.meongmory.domain.diary.dto.response.RecordCommentReq;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
 import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.response.ResponseCustom;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "diary", description = "DIARY API")
 @Api(tags = "DIARY API")
 @RestController
 @RequestMapping(value = "/diaries")
@@ -74,23 +76,28 @@ public class DiaryController {
     return ResponseCustom.OK(diaryService.recordDiary(userId, recordDiaryReq));
   }
 
+  @Operation(summary = "다이어리 댓글 등록", description = "다이어리에 댓글을 등록한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "등록 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+          @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (D0002) 존재하지 않는 다이어리", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+  })
   @PostMapping("/{diaryId}/comment")
   public ResponseCustom<Long> recordComment(
           @PathVariable("diaryId") Long diaryId,
           @RequestParam Long userId,
-          @RequestParam String comment
-  )
-  {
+          @Valid @RequestBody RecordCommentReq comment
+  ) {
+
     return ResponseCustom.OK(diaryService.recordComment(userId, diaryId, comment));
   }
 
-  @DeleteMapping("/{diaryId}/comment")
-  public ResponseCustom<Long> deleteComment(
-          @PathVariable("diaryId") Long diaryId,
-          @RequestParam Long userId,
-          @RequestParam Long diaryCommentId
-  )
-  {
-    return ResponseCustom.OK(diaryService.deleteComment(userId, diaryId, diaryCommentId));
-  }
+//  @DeleteMapping("/{diaryId}/comment")
+//  public ResponseCustom<Long> deleteComment(
+//          @PathVariable("diaryId") Long diaryId,
+//          @RequestParam Long userId,
+//          @RequestParam Long diaryCommentId
+//  )
+//  {
+//    return ResponseCustom.OK(diaryService.deleteComment(userId, diaryId, diaryCommentId));
+//  }
 }

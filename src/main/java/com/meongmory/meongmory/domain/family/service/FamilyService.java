@@ -59,8 +59,8 @@ public class FamilyService {
     public FamilyInviteCodeRes getFamilyInviteCode(Long familyId, Long userId) {
         User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
         Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
-        familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
-
+        FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+        if(!familyMember.getType().equals(MemberType.OWNER)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
         return FamilyInviteCodeRes.toDto(family);
     }
 }

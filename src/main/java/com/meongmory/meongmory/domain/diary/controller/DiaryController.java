@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api(tags = "DIARY API")
 @RestController
 @RequestMapping(value = "/diaries")
@@ -63,7 +65,7 @@ public class DiaryController {
   @PostMapping("")
   public ResponseCustom<Long> recordDiary(
           @Parameter(description = "유저 id") @RequestParam Long userId,
-          @RequestBody RecordDiaryReq recordDiaryReq
+          @Valid @RequestBody RecordDiaryReq recordDiaryReq
   )
   {
     return ResponseCustom.OK(diaryService.recordDiary(userId, recordDiaryReq));

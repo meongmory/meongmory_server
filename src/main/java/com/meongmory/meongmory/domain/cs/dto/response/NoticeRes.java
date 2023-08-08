@@ -13,13 +13,13 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class NoticeRes {
 
-    @Schema(description = "공지사항 id")
+    @Schema(type = "Long", description = "공지사항 id", example = "1")
     private Long noticeId;
 
-    @Schema(description = "공지사항 제목")
+    @Schema(type = "String", description = "공지사항 제목", example = "당신도 될 수 있습니다. 애니모리 런칭 기념 100억 이벤트!")
     private String title;
 
-    @Schema(description = "공지사항 날짜")
+    @Schema(type = "String", description = "공지사항 날짜", example = "2023-08-23")
     private String date;
 
     public static NoticeRes toDto(Notice notice) {

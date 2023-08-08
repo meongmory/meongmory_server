@@ -14,13 +14,13 @@ import java.time.format.DateTimeFormatter;
 @Schema(description = "공지사항 상세 조회 DTO")
 public class GetNoticeDetailRes {
 
-    @Schema(description = "공지사항 제목")
+    @Schema(type = "String", description = "공지사항 제목", example = "당신도 될 수 있습니다. 애니모리 런칭 기념 100억 이벤트!")
     private String title;
 
-    @Schema(description = "공지사항 내용")
+    @Schema(type = "String", description = "공지사항 내용", example = "멍모리 런칭 기념 사장님이 100억 주십니다!")
     private String comment;
 
-    @Schema(description = "공지사항 날짜")
+    @Schema(type = "String", description = "공지사항 날짜", example = "2023-08-23")
     private String date;
 
     public static GetNoticeDetailRes toDto(Notice notice) {

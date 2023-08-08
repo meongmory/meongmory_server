@@ -36,9 +36,9 @@ public class CsController {
 
     @PostMapping("/inquires")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "문의하기 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
+            @ApiResponse(responseCode = "200", description = "(S0001)문의하기 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "400", description = "(G0002)이메일 미입력\n (G0003)올바르지 않은 이메일 형식\n (G0004)내용 미입력", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
     @Operation(summary = "문의하기", description = "이메일 및 내용을 입력 받아 문의사항을 저장합니다.")
     public ResponseCustom createInquiry(@RequestBody @Valid CreateInquiryReq request) {
@@ -49,18 +49,17 @@ public class CsController {
 
     @GetMapping("/notices/{noticeId}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "공지사항 상세 조회 성공", content = @Content(schema = @Schema(implementation = GetNoticeDetailRes.class))),
-            @ApiResponse(responseCode = "400", description = "존재하지 않는 공지사항", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
+            @ApiResponse(responseCode = "200", description = "(S0001)공지사항 상세 조회 성공", content = @Content(schema = @Schema(implementation = GetNoticeDetailRes.class))),
+            @ApiResponse(responseCode = "400", description = "(C0001)존재하지 않는 공지사항", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
-
     @Operation(summary = "공지사항 상세 조회", description = "공지사항 Id를 이용해 상세 내용을 조회합니다.")
-    public ResponseCustom<GetNoticeDetailRes> getNoticeDetail(@Parameter(description = "공지사항 Id") @PathVariable Long noticeId) {
+    public ResponseCustom<GetNoticeDetailRes> getNoticeDetail(@Parameter(description = "공지사항 Id", example = "1") @PathVariable Long noticeId) {
         return ResponseCustom.OK(csService.getNoticeDetail(noticeId));
     }
 
     @GetMapping("/notices")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "공지사항 목록 조회 성공", content = @Content(schema = @Schema(implementation = GetNoticesRes.class)))
+            @ApiResponse(responseCode = "200", description = "(S0001)공지사항 목록 조회 성공", content = @Content(schema = @Schema(implementation = GetNoticesRes.class)))
     })
     @Operation(summary = "공지사항 목록 조회", description = "공지사항 전체 목록을 조회합니다.")
     public ResponseCustom<GetNoticesRes> getNotices() {

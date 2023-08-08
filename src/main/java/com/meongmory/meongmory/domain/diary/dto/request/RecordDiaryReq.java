@@ -23,15 +23,15 @@ public class RecordDiaryReq {
   @Schema(description = "다이어리 파일 키 리스트", example = "[{\"fileKey\": \"dog.png\", \"fileType\": \"photo\"}, {\"fileKey\": \"cat.mov\", \"fileType\": \"video\"}]")
   private List<RecordDiaryFileKeyReq> files;
 
-  @NotBlank(message = "D0002")
+  @NotBlank(message = "G0005")
   @Schema(description = "다이어리 제목", example = "다이어리 제목")
   private String title;
 
-  @NotBlank(message = "D0002")
+  @NotBlank(message = "G0004")
   @Schema(description = "다이어리 내용", example = "다이어리 내용")
   private String content;
 
-  @NotBlank(message = "D0003")
+  @NotBlank(message = "D0004")
   @Schema(description = "다이어리 공개 범위 (default : public)", example = "family")
   private String scope;
 

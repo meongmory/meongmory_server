@@ -43,7 +43,7 @@ public class LoginResolver implements HandlerMethodArgumentResolver{
         Auth auth = parameter.getMethodAnnotation(Auth.class);
 
         if (auth == null)
-            throw new BaseException(BaseResponseCode.AUTH_ANNOTATION_NULL);
+            throw new BaseException(BaseResponseCode.TOKEN_ANNOTATION_NULL);
 
         String accessToken = webRequest.getHeader(Objects.requireNonNull(env.getProperty("jwt.auth-header")));
         if(accessToken == null || !tokenUtils.isValidToken(tokenUtils.parseJustTokenFromFullToken(accessToken)))

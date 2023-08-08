@@ -10,8 +10,8 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum Scope {
-    PUBLIC_FAMILY(""),
-    PUBLIC_FRIENDS("");
+    PUBLIC_FAMILY("family"),
+    PUBLIC_FRIENDS("friend");
 
     private final String name;
 

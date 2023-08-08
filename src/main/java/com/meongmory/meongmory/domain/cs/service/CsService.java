@@ -1,7 +1,5 @@
 package com.meongmory.meongmory.domain.cs.service;
 
-import com.meongmory.meongmory.domain.cs.dto.assembler.CsAssembler;
-
 import com.meongmory.meongmory.domain.cs.dto.request.CreateInquiryReq;
 import com.meongmory.meongmory.domain.cs.entity.Inquiry;
 import com.meongmory.meongmory.domain.cs.repository.InquiryRepository;
@@ -29,23 +27,22 @@ public class CsService {
     private final UserRepository userRepository;
     private final InquiryRepository inquiryRepository;
     private final NoticeRepository noticeRepository;
-    private final CsAssembler csAssembler;
 
     @Transactional
     public void createInquiry(long userId, CreateInquiryReq request) {
         User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
-        Inquiry inquiry = csAssembler.toInquiry(user, request);
+        Inquiry inquiry = Inquiry.toEntity(user, request);
         inquiryRepository.save(inquiry);
     }
 
     public GetNoticeDetailRes getNoticeDetail(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeIdAndIsEnable(noticeId, true).orElseThrow(() -> new BaseException(BaseResponseCode.INVALID_NOTICE_ID));
-        return csAssembler.toGetNoticeDetailResDto(notice);
+        return GetNoticeDetailRes.toDto(notice);
     }
 
     public GetNoticesRes getNotices() {
         List<Notice> noticeList = noticeRepository.findAllByIsEnableOrderByCreatedAt(true);
-        return csAssembler.toGetNoticesResDto(noticeList);
+        return GetNoticesRes.toDto(noticeList);
     }
 }
 

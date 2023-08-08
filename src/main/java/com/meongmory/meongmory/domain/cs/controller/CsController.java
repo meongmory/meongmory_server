@@ -64,8 +64,7 @@ public class CsController {
     })
     @Operation(summary = "공지사항 목록 조회", description = "공지사항 전체 목록을 조회합니다.")
     public ResponseCustom<GetNoticesRes> getNotices() {
-//        return ResponseCustom.OK(csService.getNotices());
-        return null;
+        return ResponseCustom.OK(csService.getNotices());
     }
 
 }

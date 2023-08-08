@@ -1,5 +1,6 @@
 package com.meongmory.meongmory.domain.cs.entity;
 
+import com.meongmory.meongmory.domain.cs.dto.request.CreateInquiryReq;
 import com.meongmory.meongmory.domain.user.entity.User;
 import com.meongmory.meongmory.global.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -29,5 +30,13 @@ public class Inquiry extends BaseEntity {
         this.user = user;
         this.email=email;
         this.content=content;
+    }
+
+    public static Inquiry toEntity(User user, CreateInquiryReq request) {
+        return Inquiry.builder()
+                .user(user)
+                .email(request.getEmail())
+                .content(request.getContent())
+                .build();
     }
 }

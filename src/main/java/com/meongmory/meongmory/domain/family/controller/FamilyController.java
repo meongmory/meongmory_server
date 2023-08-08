@@ -2,6 +2,7 @@ package com.meongmory.meongmory.domain.family.controller;
 
 import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyReq;
 import com.meongmory.meongmory.domain.family.dto.response.AnimalTypeListRes;
+import com.meongmory.meongmory.domain.family.dto.response.FamilyInviteCodeRes;
 import com.meongmory.meongmory.domain.family.service.FamilyService;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import io.swagger.annotations.Api;
@@ -49,5 +50,11 @@ public class FamilyController {
             @Parameter(description = "반려동물 종류", example = "강아지") @RequestParam(required = false) String type,
             @Parameter Pageable pageable){
         return ResponseCustom.OK(familyService.getAnimalType(searchword, type, pageable));
+    }
+
+    @GetMapping("/{familyId}/invite")
+    @ResponseBody
+    public ResponseCustom<FamilyInviteCodeRes> getFamilyInviteCode(@PathVariable(value = "familyId") Long familyId){
+        return ResponseCustom.OK(familyService.getFamilyInviteCode(familyId, 1L));
     }
 }

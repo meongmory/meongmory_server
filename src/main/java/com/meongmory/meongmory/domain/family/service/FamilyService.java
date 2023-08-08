@@ -2,6 +2,7 @@ package com.meongmory.meongmory.domain.family.service;
 
 import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyReq;
 import com.meongmory.meongmory.domain.family.dto.response.AnimalTypeListRes;
+import com.meongmory.meongmory.domain.family.dto.response.FamilyInviteCodeRes;
 import com.meongmory.meongmory.domain.family.entity.Animal;
 import com.meongmory.meongmory.domain.family.entity.Family;
 import com.meongmory.meongmory.domain.family.entity.FamilyMember;
@@ -53,5 +54,13 @@ public class FamilyService {
         if(StringUtils.hasText(type)) specAnimal = specAnimal.and(AnimalSpecification.findAnimalType(AnimalType.getAnimalTypeByName(type)));
         specAnimal = specAnimal.and(AnimalSpecification.findAnimalIsEnable(true));
         return AnimalTypeListRes.toDto(animalRepository.findAll(specAnimal, pageable));
+    }
+
+    public FamilyInviteCodeRes getFamilyInviteCode(Long familyId, Long userId) {
+        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+        FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+
+        return FamilyInviteCodeRes.toDto(family);
     }
 }

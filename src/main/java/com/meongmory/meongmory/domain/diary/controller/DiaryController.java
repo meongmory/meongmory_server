@@ -66,6 +66,11 @@ public class DiaryController {
     return ResponseCustom.OK(diaryService.recordDiary(userId, recordDiaryReq));
   }
 
+  @Operation(summary = "다이어리 댓글 등록", description = "다이어리에 댓글을 등록한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "등록 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+          @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (D0002) 존재하지 않는 다이어리", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+  })
   @PostMapping("/{diaryId}/comment")
   public ResponseCustom<Long> recordComment(
           @PathVariable("diaryId") Long diaryId,

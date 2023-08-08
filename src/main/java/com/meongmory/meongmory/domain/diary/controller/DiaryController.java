@@ -6,6 +6,7 @@ import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
 import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.response.ResponseCustom;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +17,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "diary", description = "DIARY API")
+import javax.validation.Valid;
+
+@Api(tags = "DIARY API")
 @RestController
 @RequestMapping(value = "/diaries")
 @RequiredArgsConstructor
@@ -53,11 +56,16 @@ public class DiaryController {
     return ResponseCustom.OK(diaryService.detailDiary(userId, diaryId));
   }
 
+  @Operation(summary = "다이어리 등록", description = "다이어리를 등록한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "(S0001) 다이어리 등록 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+          @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (P0001) 존재하지 않는 반려동물\n (F0001) 존재하지 않는 가족\n (U0001) 존재하지 않는 다이어리 scope\n (D0001) 존재하지 않는 fileType", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+  })
   @ResponseBody
   @PostMapping("")
   public ResponseCustom<Long> recordDiary(
-          @RequestParam Long userId,
-          RecordDiaryReq recordDiaryReq
+          @Parameter(description = "유저 id") @RequestParam Long userId,
+          @Valid @RequestBody RecordDiaryReq recordDiaryReq
   )
   {
     return ResponseCustom.OK(diaryService.recordDiary(userId, recordDiaryReq));

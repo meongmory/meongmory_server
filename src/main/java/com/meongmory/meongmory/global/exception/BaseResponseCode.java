@@ -17,6 +17,7 @@ public enum BaseResponseCode {
     EMAIL_NULL("G0002", HttpStatus.BAD_REQUEST, "이메일을 입력해 주세요."),
     EMAIL_INVALID("G0003", HttpStatus.BAD_REQUEST, "올바른 이메일 형식으로 입력해 주세요."),
     CONTENT_NULL("G0004", HttpStatus.BAD_REQUEST, "내용을 입력해 주세요."),
+    TITLE_NULL("G0005", HttpStatus.BAD_REQUEST , "제목을 입력해주세요" ),
 
     // cs
     INVALID_NOTICE_ID("C0001", HttpStatus.BAD_REQUEST, "존재하지 않는 공지사항입니다."),

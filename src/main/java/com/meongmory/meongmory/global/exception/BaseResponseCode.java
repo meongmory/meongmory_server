@@ -25,7 +25,7 @@ public enum BaseResponseCode {
     // token
     TOKEN_NOT_VALID("T0001", HttpStatus.BAD_REQUEST, "해당 토큰은 유효하지 않습니다."),
     TOKEN_EXPIRATION("T0002", HttpStatus.BAD_REQUEST, "토큰이 만료되었습니다."),
-    AUTH_ANNOTATION_NULL("T0001",HttpStatus.BAD_REQUEST,"토큰을 통해 userId를 추출하는 메서드에는 @Auth 어노테이션을 붙여주세요."),
+    AUTH_ANNOTATION_NULL("T0003",HttpStatus.BAD_REQUEST,"토큰을 통해 userId를 추출하는 메서드에는 @Auth 어노테이션을 붙여주세요."),
 
 
     // user

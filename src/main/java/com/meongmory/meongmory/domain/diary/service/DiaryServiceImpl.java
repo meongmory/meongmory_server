@@ -83,6 +83,7 @@ public class DiaryServiceImpl implements DiaryService {
   {
     User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
     Diary diary = diaryRepository.findByDiaryIdAndIsEnable(diaryId, true).orElseThrow(() -> new BaseException(BaseResponseCode.DIARY_NOT_FOUND));
+    familyMemberRepository.findByFamilyAndUserAndIsEnable(diary.getFamily(), user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
     return diaryCommentRepository.save(DiaryComment.toEntity(diary, user, comment.getComment())).getDiaryCommentId();
   }
 

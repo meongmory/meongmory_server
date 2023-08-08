@@ -20,6 +20,7 @@ public class User extends BaseEntity {
     private Boolean marketing;
     private String image;
 
+    private Boolean loginStatus;
 
     @Enumerated(EnumType.STRING)
     private License license;

@@ -24,15 +24,20 @@ public enum BaseResponseCode {
     // token
     TOKEN_NOT_VALID("T0001", HttpStatus.BAD_REQUEST, "해당 토큰은 유효하지 않습니다."),
     TOKEN_EXPIRATION("T0002", HttpStatus.BAD_REQUEST, "토큰이 만료되었습니다."),
-    FAMILY_ALREADY_HAD("F0003", HttpStatus.BAD_REQUEST, "사용자의 가족 생성은 최대 1개입니다."),
+    AUTH_ANNOTATION_NULL("A0001",HttpStatus.BAD_REQUEST,"토큰을 통해 userId를 추출하는 메서드에는 @Auth 어노테이션을 붙여주세요."),
 
     // user
     USER_NOT_FOUND("U0001", HttpStatus.NOT_FOUND, "id에 해당하는 유저가 존재하지 않습니다."),
     ALREADY_PHONENUM("U0002", HttpStatus.BAD_REQUEST, "이미 존재하는 전화번호입니다."),
+    NICKNAME_NOT_FOUND("U0003",HttpStatus.NOT_FOUND,"닉네임을 입력해주세요."),
+    USER_NUMBER_NOT_FONUND("U0004",HttpStatus.NOT_FOUND,"해당 번호에 해당하는 유저가 존재하지 않습니다."),
+
 
     // family
     FAMILY_NOT_FOUND("F0001", HttpStatus.NOT_FOUND, "id에 해당하는 가족이 존재하지 않습니다."),
     FAMILY_MEMBER_NOT_FOUND("F0002", HttpStatus.NOT_FOUND, "id에 해당하는 가족 구성원이 존재하지 않습니다."),
+    FAMILY_ALREADY_HAD("F0003", HttpStatus.BAD_REQUEST, "사용자의 가족 생성은 최대 1개입니다."),
+
 
     // pet
     PET_NOT_FOUND("P0001", HttpStatus.NOT_FOUND, "id에 해당하는 반려동물이 존재하지 않습니다."),

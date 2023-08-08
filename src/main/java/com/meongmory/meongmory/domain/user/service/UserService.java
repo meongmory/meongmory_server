@@ -1,5 +1,6 @@
 package com.meongmory.meongmory.domain.user.service;
 
+import com.meongmory.meongmory.domain.user.dto.request.SignInUserReq;
 import com.meongmory.meongmory.domain.user.dto.request.SignUpUserReq;
 import com.meongmory.meongmory.domain.user.dto.response.SignUpUserRes;
 import com.meongmory.meongmory.domain.user.entity.User;
@@ -26,6 +27,11 @@ public class UserService {
         User user=userRepository.save(signUpUserReq.toEntity(signUpUserReq));
         return SignUpUserRes.toDto(user,saveToken(user));
     }
+    @Transactional
+    public SignUpUserRes signIn(SignInUserReq signInUserReq) {
+        User user=userRepository.findByPhone(signInUserReq.getPhone()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NUMBER_NOT_FONUND));
+        return SignUpUserRes.toDto(user,saveToken(user));
+    }
 
     private String saveToken(User user) {
         String accessToken = tokenUtils.createAccessToken(user.getUserId(), user.getNickname());
@@ -34,4 +40,5 @@ public class UserService {
         redisTemplateService.setUserRefreshToken(user.getUserId().toString(), refreshToken);
         return accessToken;
     }
+
 }

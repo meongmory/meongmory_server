@@ -29,7 +29,8 @@ public class DiaryController {
 
   @Operation(summary = "다이어리 조회", description = "다이어리를 조회한다.")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GetDiariesRes.class))}),
+          @ApiResponse(responseCode = "200", description = "(S0001) 조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+          @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (P0001) 존재하지 않는 반려동물\n (F0002) 존재하지 않는 가족 구성원\n (D0002) 존재하지 않는 다이어리\n (D0001) 존재하지 않는 sortType", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
   })
   @ResponseBody
   @GetMapping("/{petId}")
@@ -44,10 +45,12 @@ public class DiaryController {
 
   @Operation(summary = "다이어리 상세 조회", description = "다이어리를 상세 조회한다.")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = DetailDiaryRes.class))}),
+          @ApiResponse(responseCode = "200", description = "(S0001) 조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+          @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (D0002) 존재하지 않는 다이어리\n (F0002) 존재하지 않는 가족 구성원\n", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+          @ApiResponse(responseCode = "403", description = "(D0003) 유효하지 않은 다이어리 접근 권한", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
   })
   @ResponseBody
-  @GetMapping("/details/{diaryId}")
+  @GetMapping("/detail/{diaryId}")
   public ResponseCustom<DetailDiaryRes> detailDiary(
           @Parameter(description = "다이어리 id") @PathVariable("diaryId") Long diaryId,
           @Parameter(description = "유저 id") @RequestParam Long userId

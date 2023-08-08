@@ -65,7 +65,7 @@ public class FamilyController {
         return ResponseCustom.OK(familyService.getFamilyInviteCode(familyId, 1L));
     }
 
-    @PostMapping("/families/{familyId}/pet")
+    @PostMapping("/{familyId}/pet")
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(S0001)펫 다이어리(가족) 반려동물 생성 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
@@ -80,7 +80,7 @@ public class FamilyController {
         return ResponseCustom.OK();
     }
 
-    @DeleteMapping("/families/{familyId}/pet/{petId}")
+    @DeleteMapping("/{familyId}/pet/{petId}")
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(S0001)펫 다이어리(가족) 반려동물 삭제 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),

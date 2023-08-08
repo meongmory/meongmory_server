@@ -34,6 +34,7 @@ public enum BaseResponseCode {
     FAMILY_NOT_FOUND("F0001", HttpStatus.NOT_FOUND, "id에 해당하는 가족이 존재하지 않습니다."),
     FAMILY_MEMBER_NOT_FOUND("F0002", HttpStatus.NOT_FOUND, "id에 해당하는 가족 구성원이 존재하지 않습니다."),
     FAMILY_ALREADY_HAD("F0003", HttpStatus.BAD_REQUEST, "사용자의 가족 생성은 최대 1개입니다."),
+    FAMILY_TYPE_ACCESS_DENIED("F0004", HttpStatus.BAD_REQUEST, "가족을 생성한 사용자만 접근이 가능합니다."),
 
 
     // pet

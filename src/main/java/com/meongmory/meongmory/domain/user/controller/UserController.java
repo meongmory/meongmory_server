@@ -85,6 +85,20 @@ public class UserController {
     return ResponseCustom.OK();
   }
 
+  @Operation(summary = "로그아웃", description = "로그아웃을 진행한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "(S0001)로그아웃 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+  })
+  @Auth
+  @PostMapping("/logout")
+  public ResponseCustom<Void> logout(@IsLogin LoginStatus loginStatus
+  ) {
+    userService.logout(loginStatus.getUserId());
+    return ResponseCustom.OK();
+  }
+
+
+
 
 
 

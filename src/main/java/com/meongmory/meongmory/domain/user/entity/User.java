@@ -42,4 +42,8 @@ public class User extends BaseEntity {
     public void modifyMyPageNickName(String nickname) {this.nickname = nickname;
     }
     public void deleteUser() {this.setIsEnable(false);}
+    public void logout() {
+        this.loginStatus = false;
+    }
+
 }

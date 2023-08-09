@@ -64,4 +64,10 @@ public class UserService {
         user.deleteUser();
         redisTemplateService.deleteUserRefreshToken(userId.toString());
     }
+    @Transactional
+    public void logout(Long userId) {
+        User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        user.logout();
+        redisTemplateService.deleteUserRefreshToken(userId.toString());
+    }
 }

@@ -1,0 +1,19 @@
+package com.meongmory.meongmory.domain.user.dto.request;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import javax.validation.constraints.NotNull;
+
+@RequiredArgsConstructor
+@Getter
+public class UserAuthTokenRequest {
+    @NotNull(message="U0001")
+    @Schema(type = "Long", example = "1", description = "userId")
+    private Long userId;
+
+    @NotNull(message="SM0001")
+    @Schema(type = "String", example = "010", description = "phone-num")
+    private String phone;
+}

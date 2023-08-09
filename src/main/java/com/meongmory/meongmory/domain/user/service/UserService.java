@@ -30,7 +30,10 @@ public class UserService {
     @Transactional
     public SignUpUserRes signIn(SignInUserReq signInUserReq) {
         User user=userRepository.findByPhone(signInUserReq.getPhone()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NUMBER_NOT_FONUND));
-        return SignUpUserRes.toDto(user,saveToken(user));
+        if(user!=null){
+            user.login();
+        }
+        return SignUpUserRes.toDto(user,tokenUtils.createToken(user));
     }
 
     private String saveToken(User user) {

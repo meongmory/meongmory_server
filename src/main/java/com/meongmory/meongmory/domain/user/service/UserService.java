@@ -2,6 +2,7 @@ package com.meongmory.meongmory.domain.user.service;
 
 import com.meongmory.meongmory.domain.user.dto.request.SignInUserReq;
 import com.meongmory.meongmory.domain.user.dto.request.SignUpUserReq;
+import com.meongmory.meongmory.domain.user.dto.response.MyPageRes;
 import com.meongmory.meongmory.domain.user.dto.response.SignUpUserRes;
 import com.meongmory.meongmory.domain.user.entity.User;
 import com.meongmory.meongmory.domain.user.repository.UserRepository;
@@ -33,7 +34,7 @@ public class UserService {
         if(user!=null){
             user.login();
         }
-        return SignUpUserRes.toDto(user,tokenUtils.createToken(user));
+        return SignUpUserRes.toDto(user,saveToken(user));
     }
 
     private String saveToken(User user) {
@@ -44,4 +45,8 @@ public class UserService {
         return accessToken;
     }
 
+    public MyPageRes getMyPage(Long userId) {
+        User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        return MyPageRes.toDto(user);
+    }
 }

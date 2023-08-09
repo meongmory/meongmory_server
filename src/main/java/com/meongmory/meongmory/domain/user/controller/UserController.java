@@ -73,5 +73,19 @@ public class UserController {
     return ResponseCustom.OK();
   }
 
+  @Operation(summary = "회원탈퇴", description = "회원탈퇴를 진행한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "(S0001)회원탈퇴 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+  })
+  @Auth
+  @DeleteMapping("/delete")
+  public ResponseCustom<Void> deleteUser(@IsLogin LoginStatus loginStatus
+  ) {
+    userService.deleteUser(loginStatus.getUserId());
+    return ResponseCustom.OK();
+  }
+
+
+
 
 }

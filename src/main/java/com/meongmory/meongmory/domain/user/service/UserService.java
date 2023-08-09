@@ -58,4 +58,10 @@ public class UserService {
         if(StringUtils.hasText(modifyMyPageReq.getNickname()))user.modifyMyPageNickName(modifyMyPageReq.getNickname());
 
     }
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        user.deleteUser();
+        redisTemplateService.deleteUserRefreshToken(userId.toString());
+    }
 }

@@ -1,5 +1,6 @@
 package com.meongmory.meongmory.domain.user.controller;
 
+import com.meongmory.meongmory.domain.user.dto.request.ModifyMyPageReq;
 import com.meongmory.meongmory.domain.user.dto.request.SignInUserReq;
 import com.meongmory.meongmory.domain.user.dto.request.SignUpUserReq;
 import com.meongmory.meongmory.domain.user.dto.response.MyPageRes;
@@ -52,10 +53,25 @@ public class UserController {
           @ApiResponse(responseCode = "200", description = "(S0001)마이페이지 조회 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
   })
   @Auth
-  @GetMapping("/MyPage")
+  @GetMapping("/myPage")
   public ResponseCustom<MyPageRes> getMyPage(@IsLogin LoginStatus loginStatus
   ) {
     return ResponseCustom.OK(userService.getMyPage(loginStatus.getUserId()));
   }
+
+  @Operation(summary = "마이페이지 수정", description = "마이페이지 수정을 진행한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "(S0001)마이페이지 수정 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+          @ApiResponse(responseCode = "404", description = "(U0003)닉네임을 입력해주세요.", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+  })
+  @Auth
+  @PatchMapping("/myPage/modify")
+  public ResponseCustom<Void> modifyMyPage(@RequestBody @Valid ModifyMyPageReq modifyMyPageReq,
+          @IsLogin LoginStatus loginStatus
+  ) {
+    userService.modifyMyPage(loginStatus.getUserId(),modifyMyPageReq);
+    return ResponseCustom.OK();
+  }
+
 
 }

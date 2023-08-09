@@ -1,16 +1,11 @@
 package com.meongmory.meongmory.domain.family.service;
 
+import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyPetReq;
 import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyReq;
 import com.meongmory.meongmory.domain.family.dto.response.AnimalTypeListRes;
 import com.meongmory.meongmory.domain.family.dto.response.FamilyInviteCodeRes;
-import com.meongmory.meongmory.domain.family.entity.Animal;
-import com.meongmory.meongmory.domain.family.entity.Family;
-import com.meongmory.meongmory.domain.family.entity.FamilyMember;
-import com.meongmory.meongmory.domain.family.entity.MemberType;
-import com.meongmory.meongmory.domain.family.repository.AnimalRepository;
-import com.meongmory.meongmory.domain.family.repository.AnimalSpecification;
-import com.meongmory.meongmory.domain.family.repository.FamilyMemberRepository;
-import com.meongmory.meongmory.domain.family.repository.FamilyRepository;
+import com.meongmory.meongmory.domain.family.entity.*;
+import com.meongmory.meongmory.domain.family.repository.*;
 import com.meongmory.meongmory.domain.user.entity.User;
 import com.meongmory.meongmory.domain.user.repository.UserRepository;
 import com.meongmory.meongmory.global.entity.AnimalType;
@@ -23,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class FamilyService {
@@ -30,6 +27,7 @@ public class FamilyService {
     private final FamilyRepository familyRepository;
     private final FamilyMemberRepository familyMemberRepository;
     private final AnimalRepository animalRepository;
+    private final PetRepository petRepository;
 
     // 가족 생성
     @Transactional
@@ -63,4 +61,37 @@ public class FamilyService {
         if(!familyMember.getType().equals(MemberType.OWNER)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
         return FamilyInviteCodeRes.toDto(family);
     }
+
+    @Transactional
+    public void postFamilyPet(CreateFamilyPetReq createFamilyPetReq, Long familyId, Long userId) {
+        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+        FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+        // 친구는 반려동물 생성 불가
+        if(familyMember.getType().equals(MemberType.FRIEND)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
+        Animal animal = animalRepository.findByAnimalIdAndIsEnable(createFamilyPetReq.getAnimalId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.ANIMAL_NOT_FOUND));
+
+        // todo: pro 버전이 아닌 경우 => 몇 마리의 반려 동물이 가능한지?
+        Pet pet = Pet.toEntity(animal, createFamilyPetReq, family, createPetBirthYear(createFamilyPetReq.getBirth()));
+        petRepository.save(pet);
+    }
+
+    @Transactional
+    public void deleteFamilyPet(Long familyId, Long petId, Long userId) {
+        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+        FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+        if(familyMember.getType().equals(MemberType.FRIEND)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
+
+        Pet pet = this.petRepository.findByPetIdAndIsEnable(petId, true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND));
+        //todo: cascade 후, isEnable false 가 되는지 확인 필요
+        petRepository.delete(pet);
+    }
+
+    // abstract method
+    private LocalDate createPetBirthYear(Integer birth){
+        return LocalDate.now().minusYears(birth-1L);
+    }
+
+    private Integer createPetBirthAge(LocalDate localDate){return LocalDate.now().getYear()-localDate.getYear() - 1;}
 }

@@ -21,13 +21,11 @@ import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
     private static final String API_NAME = "MEONGMORY_SERVER_API";
     private static final String API_VERSION = "0.0.1";
@@ -43,9 +41,9 @@ public class SwaggerConfig {
                 .additionalModels(
                         typeResolver.resolve(ResponseCustom.class)
                 )
-                .securitySchemes(Arrays.asList(apiKey()))
-                .securityContexts(Arrays.asList(securityContext()))
                 .apiInfo(apiInfo())
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
@@ -60,9 +58,7 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiKey apiKey() {
-        return new ApiKey("ACCESS-TOKEN", "ACCESS-TOKEN", "header");
-    }
+    private ApiKey apiKey() {return new ApiKey("Bearer", "Authorization", "header");}
 
     private SecurityContext securityContext() {
         return SecurityContext.builder().securityReferences(defaultAuth()).build();
@@ -72,7 +68,7 @@ public class SwaggerConfig {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("ACCESS-TOKEN", authorizationScopes));
+        return Arrays.asList(new SecurityReference("Bearer", authorizationScopes));
     }
 
 

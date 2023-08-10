@@ -2,8 +2,12 @@ package com.meongmory.meongmory.domain.user.controller;
 
 import com.meongmory.meongmory.domain.user.dto.request.SignInUserReq;
 import com.meongmory.meongmory.domain.user.dto.request.SignUpUserReq;
+import com.meongmory.meongmory.domain.user.dto.response.MyPageRes;
 import com.meongmory.meongmory.domain.user.dto.response.SignUpUserRes;
 import com.meongmory.meongmory.domain.user.service.UserService;
+import com.meongmory.meongmory.global.resolver.Auth;
+import com.meongmory.meongmory.global.resolver.IsLogin;
+import com.meongmory.meongmory.global.resolver.LoginStatus;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,6 +45,17 @@ public class UserController {
   public ResponseCustom<SignUpUserRes> signIn(@RequestBody @Valid SignInUserReq signInUserReq
   ) {
     return ResponseCustom.OK(userService.signIn(signInUserReq));
+  }
+
+  @Operation(summary = "마이페이지 조회", description = "마이페이지 조회를 진행한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "(S0001)마이페이지 조회 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+  })
+  @Auth
+  @GetMapping("/myPage")
+  public ResponseCustom<MyPageRes> getMyPage(@IsLogin LoginStatus loginStatus
+  ) {
+    return ResponseCustom.OK(userService.getMyPage(loginStatus.getUserId()));
   }
 
 }

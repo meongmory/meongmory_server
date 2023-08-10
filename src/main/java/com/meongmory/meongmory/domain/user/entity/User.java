@@ -39,4 +39,6 @@ public class User extends BaseEntity {
     public void login() {
         this.loginStatus = true;
     }
+    public void modifyMyPageNickName(String nickname) {this.nickname = nickname;
+    }
 }

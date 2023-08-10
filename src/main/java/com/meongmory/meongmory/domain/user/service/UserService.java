@@ -1,5 +1,6 @@
 package com.meongmory.meongmory.domain.user.service;
 
+import com.meongmory.meongmory.domain.user.dto.request.ModifyMyPageReq;
 import com.meongmory.meongmory.domain.user.dto.request.SignInUserReq;
 import com.meongmory.meongmory.domain.user.dto.request.SignUpUserReq;
 import com.meongmory.meongmory.domain.user.dto.response.MyPageRes;
@@ -13,6 +14,7 @@ import com.meongmory.meongmory.global.util.token.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 @Service
@@ -48,5 +50,12 @@ public class UserService {
     public MyPageRes getMyPage(Long userId) {
         User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
         return MyPageRes.toDto(user);
+    }
+
+    @Transactional
+    public void modifyMyPage(Long userId, ModifyMyPageReq modifyMyPageReq) {
+        User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        if(StringUtils.hasText(modifyMyPageReq.getNickname()))user.modifyMyPageNickName(modifyMyPageReq.getNickname());
+
     }
 }

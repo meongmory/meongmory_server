@@ -22,6 +22,8 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.meongmory.meongmory.global.exception.BaseResponseCode.FAMILY_OWNER_DELETE_DENIED;
+
 @Service
 @RequiredArgsConstructor
 public class FamilyService {
@@ -94,8 +96,6 @@ public class FamilyService {
         User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
         Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
         FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
-        // Owner가 아니면 접근 불가
-        if(!familyMember.getType().equals(MemberType.OWNER)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
 
         List<Pet> familyPetList = petRepository.findAllByFamilyAndIsEnable(family, true);
         List<FamilyMember> familyList = familyMemberRepository.findAllByFamilyAndTypeAndIsEnable(family, MemberType.FAMILY, true);
@@ -103,6 +103,23 @@ public class FamilyService {
         familyList.add(familyMember); // owner 저장
 
         return FamilyListRes.toDto(familyList, friendList, familyPetList);
+    }
+
+    public void deleteFamilyMember(Long familyId, Long memberId, Long ownerId) {
+        Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+
+        // owner exception
+        User owner = userRepository.findByUserIdAndIsEnable(ownerId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        FamilyMember familyOwner = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, owner, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+        if(!familyOwner.getType().equals(MemberType.OWNER)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
+
+        // member exception
+        User member = userRepository.findByUserIdAndIsEnable(memberId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, member, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+        if(familyMember.getType().equals(MemberType.OWNER)) throw new BaseException(FAMILY_OWNER_DELETE_DENIED); // owner 면 삭제 불가능
+
+        // todo: cascade 후 isEnable false test 필요
+        familyMemberRepository.delete(familyMember);
     }
 
     // abstract method

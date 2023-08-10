@@ -101,7 +101,6 @@ public class FamilyController {
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(S0001)가족/친구/반려동물 리스트 불러오기 성공", content = @Content(schema = @Schema(implementation = FamilyListRes.class))),
-            @ApiResponse(responseCode = "400", description = "(F0004)펫 다이어리 생성 유저만 접근 가능", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
             @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n (F0001)존재하지 않은 다이어리(가족)\n (F0002)존재하지 않은 가족 구성원\n", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
     @Operation(summary = "가족/친구/반려동물 리스트", description = "가족 내 반려동물, 가족, 친구 리스트르 불러온다. ")
@@ -110,4 +109,19 @@ public class FamilyController {
         return ResponseCustom.OK(familyService.getFamilyAndPetList(familyId, 1L));
     }
 
+    @DeleteMapping("{familyId}/{userId}")
+    @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "(S0001)가족/친구/반려동물 리스트 불러오기 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "400", description = "(F0004)펫 다이어리 생성 유저만 접근 가능", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n (F0001)존재하지 않은 다이어리(가족)\n (F0002)존재하지 않은 가족 구성원\n", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
+    })
+    @Operation(summary = "펫 다이어리 가족, 친구 삭제", description = "펫 다이어리(가족)에서 가족, 친구를 삭제한다. ")
+    public ResponseCustom deleteFamilyMember(
+            @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId,
+            @Parameter(description = "(Long) 사용자 Id", example = "1") @PathVariable(value = "userId") Long userId
+    ){
+        familyService.deleteFamilyMember(familyId, userId, 1L);
+        return ResponseCustom.OK();
+    }
 }

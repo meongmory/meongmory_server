@@ -5,7 +5,6 @@ import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
 import com.meongmory.meongmory.domain.diary.dto.response.RecordCommentReq;
 import com.meongmory.meongmory.domain.diary.service.DiaryService;
-import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.resolver.Auth;
 import com.meongmory.meongmory.global.resolver.IsLogin;
 import com.meongmory.meongmory.global.resolver.LoginStatus;
@@ -19,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -99,14 +97,4 @@ public class DiaryController {
 
     return ResponseCustom.OK(diaryService.recordComment(loginStatus.getUserId(), diaryId, comment));
   }
-
-//  @DeleteMapping("/{diaryId}/comment")
-//  public ResponseCustom<Long> deleteComment(
-//          @PathVariable("diaryId") Long diaryId,
-//          @RequestParam Long userId,
-//          @RequestParam Long diaryCommentId
-//  )
-//  {
-//    return ResponseCustom.OK(diaryService.deleteComment(userId, diaryId, diaryCommentId));
-//  }
 }

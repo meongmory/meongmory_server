@@ -30,15 +30,14 @@ public class DiaryFile extends BaseEntity {
     this.diary = diary;
     this.fileKey = fileKey;
     this.type = type;
+    diary.getFiles().add(this);
   }
 
   public static DiaryFile toEntity(Diary diary, String fileKey, FileType type) {
-    DiaryFile diaryFile = DiaryFile.builder()
+    return DiaryFile.builder()
             .diary(diary)
             .fileKey(fileKey)
             .type(type)
             .build();
-    diary.getFiles().add(diaryFile);
-    return diaryFile;
   }
 }

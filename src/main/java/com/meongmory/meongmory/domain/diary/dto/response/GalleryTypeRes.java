@@ -1,6 +1,7 @@
 package com.meongmory.meongmory.domain.diary.dto.response;
 
 import com.meongmory.meongmory.domain.diary.entity.Diary;
+import com.meongmory.meongmory.global.util.AwsS3ImageUrlUtil;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,7 +19,7 @@ public class GalleryTypeRes {
   public static GalleryTypeRes toDto(Diary diary) {
     return GalleryTypeRes.builder()
         .diaryId(diary.getDiaryId())
-        .thumbnailImgKey(diary.getFiles().get(0).getFileKey())
+        .thumbnailImgKey(AwsS3ImageUrlUtil.toUrl(diary.getFiles().get(0).getFileKey()))
         .build();
   }
 }

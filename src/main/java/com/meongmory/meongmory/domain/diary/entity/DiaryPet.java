@@ -30,6 +30,7 @@ public class DiaryPet extends BaseEntity {
   public DiaryPet(Diary diary, Pet pet) {
     this.diary = diary;
     this.pet = pet;
+    diary.getDiaryPets().add(this);
   }
 
   public static DiaryPet toEntity(Diary diary, Pet pet) {

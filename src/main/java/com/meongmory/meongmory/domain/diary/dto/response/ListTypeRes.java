@@ -1,8 +1,11 @@
 package com.meongmory.meongmory.domain.diary.dto.response;
 
 import com.meongmory.meongmory.domain.diary.entity.Diary;
+import com.meongmory.meongmory.domain.diary.entity.DiaryPet;
+import com.meongmory.meongmory.domain.family.entity.Pet;
 import lombok.Builder;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,12 +26,12 @@ public class ListTypeRes {
     this.files = files;
   }
 
-  public static ListTypeRes toDto(Diary diary) {
+  public static ListTypeRes toDto(Diary diary, Pet pet) {
     return ListTypeRes.builder()
-        .diaryId(diary.getDiaryId())
-//        .petName(diary.getPet().getName())
-        .uploadedAt(diary.getCreatedAt())
-        .files(diary.getFiles().stream().map(FileRes::toDto).collect(Collectors.toList()))
-        .build();
+            .petName(pet.getName())
+            .diaryId(diary.getDiaryId())
+            .uploadedAt(diary.getCreatedAt())
+            .files(diary.getFiles().stream().map(FileRes::toDto).collect(Collectors.toList()))
+            .build();
   }
 }

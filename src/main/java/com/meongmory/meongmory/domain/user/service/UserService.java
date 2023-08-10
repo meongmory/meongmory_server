@@ -33,9 +33,6 @@ public class UserService {
     @Transactional
     public SignUpUserRes signIn(SignInUserReq signInUserReq) {
         User user=userRepository.findByPhone(signInUserReq.getPhone()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NUMBER_NOT_FONUND));
-        if(user!=null){
-            user.login();
-        }
         return SignUpUserRes.toDto(user,saveToken(user));
     }
 
@@ -48,26 +45,25 @@ public class UserService {
     }
 
     public MyPageRes getMyPage(Long userId) {
-        User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        User user=userRepository.findByUserIdAndIsEnable(userId,true).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
         return MyPageRes.toDto(user);
     }
 
     @Transactional
     public void modifyMyPage(Long userId, ModifyMyPageReq modifyMyPageReq) {
-        User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        User user=userRepository.findByUserIdAndIsEnable(userId,true).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
         if(StringUtils.hasText(modifyMyPageReq.getNickname()))user.modifyMyPageNickName(modifyMyPageReq.getNickname());
 
     }
     @Transactional
     public void deleteUser(Long userId) {
-        User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        User user=userRepository.findByUserIdAndIsEnable(userId,true).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
         user.deleteUser();
         redisTemplateService.deleteUserRefreshToken(userId.toString());
     }
     @Transactional
     public void logout(Long userId) {
-        User user=userRepository.findByUserId(userId).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
-        user.logout();
+        User user=userRepository.findByUserIdAndIsEnable(userId,true).orElseThrow(()->new BaseException(BaseResponseCode.USER_NOT_FOUND));
         redisTemplateService.deleteUserRefreshToken(userId.toString());
     }
 }

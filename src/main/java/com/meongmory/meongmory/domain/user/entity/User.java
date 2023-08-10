@@ -20,8 +20,6 @@ public class User extends BaseEntity {
     private Boolean marketing;
     private String image;
 
-    private Boolean loginStatus;
-
     @Enumerated(EnumType.STRING)
     private License license;
 
@@ -36,14 +34,9 @@ public class User extends BaseEntity {
         this.image=image;
     }
 
-    public void login() {
-        this.loginStatus = true;
-    }
+
     public void modifyMyPageNickName(String nickname) {this.nickname = nickname;
     }
     public void deleteUser() {this.setIsEnable(false);}
-    public void logout() {
-        this.loginStatus = false;
-    }
 
 }

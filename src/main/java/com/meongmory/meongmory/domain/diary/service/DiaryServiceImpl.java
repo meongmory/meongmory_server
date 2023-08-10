@@ -1,6 +1,5 @@
 package com.meongmory.meongmory.domain.diary.service;
 
-import com.meongmory.meongmory.domain.diary.dto.assembler.DiaryAssembler;
 import com.meongmory.meongmory.domain.diary.dto.request.RecordDiaryReq;
 import com.meongmory.meongmory.domain.diary.dto.response.DetailDiaryRes;
 import com.meongmory.meongmory.domain.diary.dto.response.GetDiariesRes;
@@ -12,6 +11,7 @@ import com.meongmory.meongmory.domain.diary.repository.DiaryPetRepository;
 import com.meongmory.meongmory.domain.diary.repository.DiaryRepository;
 import com.meongmory.meongmory.domain.family.entity.Family;
 import com.meongmory.meongmory.domain.family.entity.FamilyMember;
+import com.meongmory.meongmory.domain.family.entity.MemberType;
 import com.meongmory.meongmory.domain.family.entity.Pet;
 import com.meongmory.meongmory.domain.family.repository.FamilyMemberRepository;
 import com.meongmory.meongmory.domain.family.repository.FamilyRepository;
@@ -23,6 +23,7 @@ import com.meongmory.meongmory.global.exception.BaseResponseCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,6 @@ public class DiaryServiceImpl implements DiaryService {
   private final PetRepository petRepository;
   private final DiaryPetRepository diaryPetRepository;
   private final DiaryFileRepository diaryFileRepository;
-  private final DiaryAssembler diaryAssembler;
 
   @Override
   public GetDiariesRes getDiaries(Long userId, Long petId, String sortType)
@@ -50,7 +50,7 @@ public class DiaryServiceImpl implements DiaryService {
     List<DiaryPet> diaryPet = diaryPetRepository.findByPetAndIsEnable(pet, true);
     List<Diary> diaries = diaryPet.stream().map(m -> diaryRepository.findByDiaryIdAndIsEnable(m.getDiary().getDiaryId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.DIARY_NOT_FOUND))).collect(Collectors.toList());
 
-    return GetDiariesRes.toDto(diaryAssembler.filteredDiariesByScope(diaries, familyMember.getType()), SortType.getSortTypeByName(sortType));
+    return GetDiariesRes.toDto(filteredDiariesByScope(diaries, familyMember.getType()), SortType.getSortTypeByName(sortType));
   }
 
   @Override
@@ -61,7 +61,7 @@ public class DiaryServiceImpl implements DiaryService {
     FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(diary.getFamily(), user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
 
     List<DiaryComment> comments = diaryCommentRepository.findByDiaryAndIsEnable(diary, true);
-    if(!diaryAssembler.checkScope(diary.getScope(), familyMember.getType())) throw new BaseException(BaseResponseCode.INVALID_SCOPE);
+    if(!checkScope(diary.getScope(), familyMember.getType())) throw new BaseException(BaseResponseCode.INVALID_SCOPE);
 
     return DetailDiaryRes.toDto(diary, diary.getFamily().getPets(), comments);
   }
@@ -85,6 +85,18 @@ public class DiaryServiceImpl implements DiaryService {
     Diary diary = diaryRepository.findByDiaryIdAndIsEnable(diaryId, true).orElseThrow(() -> new BaseException(BaseResponseCode.DIARY_NOT_FOUND));
     familyMemberRepository.findByFamilyAndUserAndIsEnable(diary.getFamily(), user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
     return diaryCommentRepository.save(DiaryComment.toEntity(diary, user, comment.getComment())).getDiaryCommentId();
+  }
+
+  public List<Diary> filteredDiariesByScope(List<Diary> diaries, MemberType type) {
+    List<Diary> inScopeDiaries = new ArrayList<>();
+    for (Diary diary : diaries) {
+      if(checkScope(diary.getScope(), type)) inScopeDiaries.add(diary);
+    }
+    return inScopeDiaries;
+  }
+
+  public boolean checkScope(Scope scope, MemberType type) {
+    return scope.name().split("_")[1].equals(type.name());
   }
 
 //  @Override

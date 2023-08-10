@@ -23,7 +23,7 @@ public class Diary extends BaseEntity {
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
   private List<DiaryFile> files = new ArrayList<>();
 
-  @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
   private List<DiaryPet> diaryPets = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)

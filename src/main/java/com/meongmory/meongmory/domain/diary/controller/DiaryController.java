@@ -31,10 +31,10 @@ public class DiaryController {
 
   private final DiaryService diaryService;
 
-  @Operation(summary = "다이어리 조회", description = "다이어리를 조회한다.")
+  @Operation(summary = "다이어리 전체 조회", description = "familyId에 해당하는 가족의 모든 다이어리를 조회한다.")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "(S0001) 조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
-          @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (P0001) 존재하지 않는 반려동물\n (F0002) 존재하지 않는 가족 구성원\n (D0002) 존재하지 않는 다이어리\n (D0001) 존재하지 않는 sortType", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+          @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (P0001) 존재하지 않는 가족\n (D0001) 존재하지 않는 sortType", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
   })
   @Auth
   @ResponseBody
@@ -50,7 +50,7 @@ public class DiaryController {
 
 
 
-  @Operation(summary = "다이어리 조회", description = "다이어리를 조회한다.")
+  @Operation(summary = "반려동물 다이어리 조회", description = "petId에 해당하는 반려동물의 다이어리를 조회한다.")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "(S0001) 조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
           @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (P0001) 존재하지 않는 반려동물\n (F0002) 존재하지 않는 가족 구성원\n (D0002) 존재하지 않는 다이어리\n (D0001) 존재하지 않는 sortType", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),

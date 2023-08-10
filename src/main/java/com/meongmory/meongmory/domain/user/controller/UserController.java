@@ -52,7 +52,7 @@ public class UserController {
           @ApiResponse(responseCode = "200", description = "(S0001)마이페이지 조회 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
   })
   @Auth
-  @GetMapping("/MyPage")
+  @GetMapping("/myPage")
   public ResponseCustom<MyPageRes> getMyPage(@IsLogin LoginStatus loginStatus
   ) {
     return ResponseCustom.OK(userService.getMyPage(loginStatus.getUserId()));

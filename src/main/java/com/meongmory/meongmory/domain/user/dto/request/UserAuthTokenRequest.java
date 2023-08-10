@@ -11,9 +11,9 @@ import javax.validation.constraints.NotNull;
 public class UserAuthTokenRequest {
     @NotNull(message="TOKEN_NULL")
     @Schema(type = "String", example = "1", description = "userId")
-    private String accessToken;
+    private Long userId;
 
     @NotNull(message="TOKEN_NULL")
     @Schema(type = "String", example = "010", description = "phone-num")
-    private String refreshToken;
+    private String phone;
 }

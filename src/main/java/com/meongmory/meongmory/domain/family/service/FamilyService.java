@@ -4,6 +4,7 @@ import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyPetReq;
 import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyReq;
 import com.meongmory.meongmory.domain.family.dto.response.AnimalTypeListRes;
 import com.meongmory.meongmory.domain.family.dto.response.FamilyInviteCodeRes;
+import com.meongmory.meongmory.domain.family.dto.response.FamilyListRes;
 import com.meongmory.meongmory.domain.family.entity.*;
 import com.meongmory.meongmory.domain.family.repository.*;
 import com.meongmory.meongmory.domain.user.entity.User;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -81,11 +83,26 @@ public class FamilyService {
         User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
         Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
         FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+        // 친구면, 반려동물 삭제 불가
         if(familyMember.getType().equals(MemberType.FRIEND)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
 
         Pet pet = this.petRepository.findByPetIdAndIsEnable(petId, true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND));
-        //todo: cascade 후, isEnable false 가 되는지 확인 필요
         petRepository.delete(pet);
+    }
+
+    public FamilyListRes getFamilyAndPetList(Long familyId, Long userId) {
+        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+        FamilyMember familyMember = familyMemberRepository.findByFamilyAndUserAndIsEnable(family, user, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_MEMBER_NOT_FOUND));
+        // Owner가 아니면 접근 불가
+        if(!familyMember.getType().equals(MemberType.OWNER)) throw new BaseException(BaseResponseCode.FAMILY_TYPE_ACCESS_DENIED);
+
+        List<Pet> familyPetList = petRepository.findAllByFamilyAndIsEnable(family, true);
+        List<FamilyMember> familyList = familyMemberRepository.findAllByFamilyAndTypeAndIsEnable(family, MemberType.FAMILY, true);
+        List<FamilyMember> friendList = familyMemberRepository.findAllByFamilyAndTypeAndIsEnable(family, MemberType.FRIEND, true);
+        familyList.add(familyMember); // owner 저장
+
+        return FamilyListRes.toDto(familyList, friendList, familyPetList);
     }
 
     // abstract method
@@ -94,4 +111,5 @@ public class FamilyService {
     }
 
     private Integer createPetBirthAge(LocalDate localDate){return LocalDate.now().getYear()-localDate.getYear() - 1;}
+
 }

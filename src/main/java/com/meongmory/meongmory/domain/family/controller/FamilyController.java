@@ -4,6 +4,7 @@ import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyPetReq;
 import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyReq;
 import com.meongmory.meongmory.domain.family.dto.response.AnimalTypeListRes;
 import com.meongmory.meongmory.domain.family.dto.response.FamilyInviteCodeRes;
+import com.meongmory.meongmory.domain.family.dto.response.FamilyListRes;
 import com.meongmory.meongmory.domain.family.service.FamilyService;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import io.swagger.annotations.Api;
@@ -42,7 +43,7 @@ public class FamilyController {
     @GetMapping("/pet/kind")
     @ResponseBody
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "(S0001)반려동물 품종 검색 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "200", description = "(S0001)반려동물 품종 검색 성공", content = @Content(schema = @Schema(implementation = AnimalTypeListRes.class))),
             @ApiResponse(responseCode = "400", description = "(A0001)반려동물 종류 이름 오류", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
     })
     @Operation(summary = "반려동물 품종 검색", description = "검색어와 반려동물 종류를 받아 품종을 검색합니다.")
@@ -56,7 +57,7 @@ public class FamilyController {
     @GetMapping("/{familyId}/invite")
     @ResponseBody
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "(S0001)펫 다이어리(가족) 초대 코드 조회 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "200", description = "(S0001)펫 다이어리(가족) 초대 코드 조회 성공", content = @Content(schema = @Schema(implementation = FamilyInviteCodeRes.class))),
             @ApiResponse(responseCode = "400", description = "(F0004)펫 다이어리 생성 유저만 접근 가능", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
             @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n (F0001)존재하지 않은 다이어리(가족)\n (F0002)존재하지 않은 가족 구성원", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
@@ -95,4 +96,18 @@ public class FamilyController {
         familyService.deleteFamilyPet(familyId, petId, 1L);
         return ResponseCustom.OK();
     }
+
+    @GetMapping("/{familyId}")
+    @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "(S0001)가족/친구/반려동물 리스트 불러오기 성공", content = @Content(schema = @Schema(implementation = FamilyListRes.class))),
+            @ApiResponse(responseCode = "400", description = "(F0004)펫 다이어리 생성 유저만 접근 가능", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
+            @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n (F0001)존재하지 않은 다이어리(가족)\n (F0002)존재하지 않은 가족 구성원\n", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
+    })
+    @Operation(summary = "가족/친구/반려동물 리스트", description = "가족 내 반려동물, 가족, 친구 리스트르 불러온다. ")
+    public ResponseCustom<FamilyListRes> getFamilyList(
+            @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId){
+        return ResponseCustom.OK(familyService.getFamilyAndPetList(familyId, 1L));
+    }
+
 }

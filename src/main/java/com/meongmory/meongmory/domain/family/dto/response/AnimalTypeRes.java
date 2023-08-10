@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class AnimalTypeRes {
-    @Schema(type = "Long", description = "반려동물 품종 목록 리스트", example = "1")
+    @Schema(type = "Long", description = "반려동물 품종 id", example = "1")
     private Long animalId;
     @Schema(type = "String", description = "반려동물 타입", allowableValues = {"강아지", "고양이"}, example = "강아지")
     private String animalType;

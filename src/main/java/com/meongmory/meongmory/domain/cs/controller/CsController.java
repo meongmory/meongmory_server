@@ -4,6 +4,8 @@ package com.meongmory.meongmory.domain.cs.controller;
 import com.meongmory.meongmory.domain.cs.dto.request.CreateInquiryReq;
 import com.meongmory.meongmory.domain.cs.dto.response.GetNoticeDetailRes;
 import com.meongmory.meongmory.domain.cs.service.CsService;
+import com.meongmory.meongmory.global.resolver.IsLogin;
+import com.meongmory.meongmory.global.resolver.LoginStatus;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,9 +43,9 @@ public class CsController {
             @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
     @Operation(summary = "문의하기", description = "이메일 및 내용을 입력 받아 문의사항을 저장합니다.")
-    public ResponseCustom createInquiry(@RequestBody @Valid CreateInquiryReq request) {
-        // TODO 토큰 받아오기
-        csService.createInquiry(1L, request);
+    public ResponseCustom createInquiry(@Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
+                                        @RequestBody @Valid CreateInquiryReq request) {
+        csService.createInquiry(loginStatus.getUserId(), request);
         return ResponseCustom.OK();
     }
 

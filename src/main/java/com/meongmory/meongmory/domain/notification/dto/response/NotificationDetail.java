@@ -10,12 +10,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class NotificationDetail {
 
-    @Schema(description = "알림 제목")
+    @Schema(type = "String", description = "알림 제목", example = "댓글")
     private String title;
 
-    @Schema(description = "알림 내용")
+    @Schema(type = "String", description = "알림 내용", example = "소징님이 고영어 모음집 글에 새로운 댓글을 남겼습니다.")
     private String content;
 
-    @Schema(description = "알림 날짜")
+    @Schema(type = "String", description = "알림 날짜", example = "2023-09-01")
     private String date;
 }

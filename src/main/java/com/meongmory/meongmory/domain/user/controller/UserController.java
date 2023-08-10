@@ -65,7 +65,7 @@ public class UserController {
           @ApiResponse(responseCode = "404", description = "(U0003)닉네임을 입력해주세요.", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
   })
   @Auth
-  @PatchMapping("/myPage/modify")
+  @PatchMapping("/myPage")
   public ResponseCustom<Void> modifyMyPage(@RequestBody @Valid ModifyMyPageReq modifyMyPageReq,
           @IsLogin LoginStatus loginStatus
   ) {

@@ -35,4 +35,8 @@ public class User extends BaseEntity {
         this.license=license;
         this.image=image;
     }
+
+    public void login() {
+        this.loginStatus = true;
+    }
 }

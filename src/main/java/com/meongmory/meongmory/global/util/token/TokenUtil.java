@@ -1,6 +1,7 @@
 package com.meongmory.meongmory.global.util.token;
 
 
+import com.meongmory.meongmory.domain.user.dto.request.UserAuthTokenRequest;
 import com.meongmory.meongmory.domain.user.entity.User;
 import com.meongmory.meongmory.global.exception.BaseException;
 import com.meongmory.meongmory.global.exception.BaseResponseCode;
@@ -222,7 +223,7 @@ public class TokenUtil {
         return String.valueOf(getJwtBodyFromJustToken(parseJustTokenFromFullToken(fullToken)).get(USER_ID));
     }
 
-    public String getNicknameFromFullToken(String fullToken) {
+    public String getPhoneFromFullToken(String fullToken) {
         return String.valueOf(getJwtBodyFromJustToken(parseJustTokenFromFullToken(fullToken)).get(NICKNAME));
     }
 
@@ -237,14 +238,14 @@ public class TokenUtil {
     }
 
     @Transactional
-    public String accessExpiration(Long userIdx) {
-        String userRefreshToken = redisTemplateService.getUserRefreshToken(userIdx.toString());
+    public String accessExpiration(UserAuthTokenRequest userAuthTokenRequest) {
+        String userRefreshToken = redisTemplateService.getUserRefreshToken(userAuthTokenRequest.getUserId().toString());
         if (userRefreshToken == null) throw new BaseException(BaseResponseCode.TOKEN_EXPIRATION);
-        String refreshNickname = getNicknameFromFullToken(userRefreshToken);
-        if (refreshNickname.isEmpty()) throw new BaseException(BaseResponseCode.TOKEN_EXPIRATION);
+        String refreshPhone = getPhoneFromFullToken(userRefreshToken);
+        if (refreshPhone.isEmpty()) throw new BaseException(BaseResponseCode.TOKEN_EXPIRATION);
 
         //토큰이 만료되었을 경우.
-        return createAccessToken(userIdx, refreshNickname);
+        return createAccessToken(userAuthTokenRequest.getUserId(), refreshPhone);
     }
 
 }

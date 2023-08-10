@@ -9,11 +9,11 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 @Getter
 public class UserAuthTokenRequest {
-    @NotNull(message="U0001")
-    @Schema(type = "Long", example = "1", description = "userId")
-    private Long userId;
+    @NotNull(message="TOKEN_NULL")
+    @Schema(type = "String", example = "1", description = "userId")
+    private String accessToken;
 
-    @NotNull(message="SM0001")
+    @NotNull(message="TOKEN_NULL")
     @Schema(type = "String", example = "010", description = "phone-num")
-    private String phone;
+    private String refreshToken;
 }

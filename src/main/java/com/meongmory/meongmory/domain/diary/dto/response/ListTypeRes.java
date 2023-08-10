@@ -14,21 +14,21 @@ import java.util.stream.Collectors;
 public class ListTypeRes {
 
   private Long diaryId;
-  private String petName;
+  private List<PetNameRes> petName;
   private LocalDateTime uploadedAt;
   private List<FileRes> files;
 
   @Builder
-  public ListTypeRes(Long diaryId, String petName, LocalDateTime uploadedAt, List<FileRes> files) {
+  public ListTypeRes(Long diaryId, List<PetNameRes> petName, LocalDateTime uploadedAt, List<FileRes> files) {
     this.diaryId = diaryId;
     this.petName = petName;
     this.uploadedAt = uploadedAt;
     this.files = files;
   }
 
-  public static ListTypeRes toDto(Diary diary, Pet pet) {
+  public static ListTypeRes toDto(Diary diary) {
     return ListTypeRes.builder()
-            .petName(pet.getName())
+            .petName(diary.getDiaryPets().stream().map(m -> PetNameRes.toDto(m.getPet().getName())).collect(Collectors.toList()))
             .diaryId(diary.getDiaryId())
             .uploadedAt(diary.getCreatedAt())
             .files(diary.getFiles().stream().map(FileRes::toDto).collect(Collectors.toList()))

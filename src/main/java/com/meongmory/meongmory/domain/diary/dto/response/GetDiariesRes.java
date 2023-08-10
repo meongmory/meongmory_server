@@ -3,6 +3,7 @@ package com.meongmory.meongmory.domain.diary.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.meongmory.meongmory.domain.diary.entity.Diary;
 import com.meongmory.meongmory.domain.diary.entity.SortType;
+import com.meongmory.meongmory.domain.family.entity.Family;
 import com.meongmory.meongmory.domain.family.entity.Pet;
 import lombok.Data;
 
@@ -21,7 +22,17 @@ public class GetDiariesRes {
     if(sortType == SortType.GALLERY) {
       getDiariesRes.galleryTypeRes = diaries.stream().map(GalleryTypeRes::toDto).collect(Collectors.toList());
     } else {
-      getDiariesRes.listTypeRes = diaries.stream().map(diary -> ListTypeRes.toDto(diary, pet)).collect(Collectors.toList());
+      getDiariesRes.listTypeRes = diaries.stream().map(ListTypeRes::toDto).collect(Collectors.toList());
+    }
+    return getDiariesRes;
+  }
+
+  public static GetDiariesRes toDto(Family family, SortType sortType) {
+    GetDiariesRes getDiariesRes = new GetDiariesRes();
+    if(sortType == SortType.GALLERY) {
+      getDiariesRes.galleryTypeRes = family.getDiaries().stream().map(GalleryTypeRes::toDto).collect(Collectors.toList());
+    } else {
+      getDiariesRes.listTypeRes = family.getDiaries().stream().map(ListTypeRes::toDto).collect(Collectors.toList());
     }
     return getDiariesRes;
   }

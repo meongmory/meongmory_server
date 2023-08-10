@@ -38,14 +38,33 @@ public class DiaryController {
   })
   @Auth
   @ResponseBody
-  @GetMapping("/{petId}")
+  @GetMapping("/{familyId}")
   public ResponseCustom<GetDiariesRes> getDiaries(
+          @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
+          @Parameter(description = "가족 id") @PathVariable(name = "familyId") Long familyId,
+          @Parameter(description = "정렬 형식 ('갤러리형식' or '리스트형식')") @RequestParam String sortType
+  )
+  {
+    return ResponseCustom.OK(diaryService.getDiaries(loginStatus.getUserId(), familyId, sortType));
+  }
+
+
+
+  @Operation(summary = "다이어리 조회", description = "다이어리를 조회한다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "(S0001) 조회 성공", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+          @ApiResponse(responseCode = "404", description = "(U0001) 존재하지 않는 유저\n (P0001) 존재하지 않는 반려동물\n (F0002) 존재하지 않는 가족 구성원\n (D0002) 존재하지 않는 다이어리\n (D0001) 존재하지 않는 sortType", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseCustom.class))}),
+  })
+  @Auth
+  @ResponseBody
+  @GetMapping("/read/{petId}")
+  public ResponseCustom<GetDiariesRes> getDiariesByPet(
           @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
           @Parameter(description = "반려동물 id") @PathVariable(name = "petId") Long petId,
           @Parameter(description = "정렬 형식 ('갤러리형식' or '리스트형식')") @RequestParam String sortType
   )
   {
-    return ResponseCustom.OK(diaryService.getDiaries(loginStatus.getUserId(), petId, sortType));
+    return ResponseCustom.OK(diaryService.getDiariesByPet(loginStatus.getUserId(), petId, sortType));
   }
 
   @Operation(summary = "다이어리 상세 조회", description = "다이어리를 상세 조회한다.")

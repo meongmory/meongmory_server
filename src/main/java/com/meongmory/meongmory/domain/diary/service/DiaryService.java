@@ -41,7 +41,14 @@ public class DiaryService {
   private final DiaryPetRepository diaryPetRepository;
   private final DiaryFileRepository diaryFileRepository;
 
-  public GetDiariesRes getDiaries(Long userId, Long petId, String sortType)
+  public GetDiariesRes getDiaries(Long userId, Long familyId, String sortType)
+  {
+    User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+    Family family = familyRepository.findByFamilyIdAndIsEnable(familyId, true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+    return GetDiariesRes.toDto(family, SortType.getSortTypeByName(sortType));
+  }
+
+  public GetDiariesRes getDiariesByPet(Long userId, Long petId, String sortType)
   {
     User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
     Pet pet = petRepository.findByPetIdAndIsEnable(petId, true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND));
@@ -71,7 +78,9 @@ public class DiaryService {
     List<Pet> pets = recordDiaryReq.getPets().stream().map(m -> petRepository.findByPetIdAndIsEnable(m.getPetId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.PET_NOT_FOUND))).collect(Collectors.toList());
     Family family = familyRepository.findByFamilyIdAndIsEnable(recordDiaryReq.getFamilyId(), true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
     Diary diary = diaryRepository.save(Diary.toEntity(family, recordDiaryReq.getTitle(), recordDiaryReq.getContent(), Scope.getScopeByName(recordDiaryReq.getScope())));
+    // DiaryPet 연관관계 설정
     pets.forEach(pet -> diaryPetRepository.save(DiaryPet.toEntity(diary, pet)));
+    // DiaryFile 연관관계 설정
     recordDiaryReq.getFiles().stream().map(f -> DiaryFile.toEntity(diary, f.getFileKey(), FileType.getFileTypeByName(f.getFileType()))).forEach(diaryFileRepository::save);
     return diary.getDiaryId();
   }
@@ -85,15 +94,15 @@ public class DiaryService {
     return diaryCommentRepository.save(DiaryComment.toEntity(diary, user, comment.getComment())).getDiaryCommentId();
   }
 
-  public List<Diary> filteredDiariesByScope(List<Diary> diaries, MemberType type) {
+  public List<Diary> filteredDiariesByScope(List<Diary> diaries, MemberType type)
+  {
     List<Diary> inScopeDiaries = new ArrayList<>();
-    for (Diary diary : diaries) {
-      if(checkScope(diary.getScope(), type)) inScopeDiaries.add(diary);
-    }
+    for (Diary diary : diaries) if(checkScope(diary.getScope(), type)) inScopeDiaries.add(diary);
     return inScopeDiaries;
   }
 
-  public boolean checkScope(Scope scope, MemberType type) {
+  public boolean checkScope(Scope scope, MemberType type)
+  {
     if(type == MemberType.OWNER) return true;
     return scope.name().split("_")[1].equals(type.name());
   }

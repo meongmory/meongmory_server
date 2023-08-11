@@ -109,7 +109,7 @@ public class FamilyController {
         return ResponseCustom.OK(familyService.getFamilyAndPetList(familyId, 1L));
     }
 
-    @DeleteMapping("{familyId}/{userId}")
+    @DeleteMapping("/{familyId}/{userId}")
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(S0001)가족/친구/반려동물 리스트 불러오기 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),

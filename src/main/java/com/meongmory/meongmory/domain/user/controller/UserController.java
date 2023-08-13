@@ -78,7 +78,7 @@ public class UserController {
           @ApiResponse(responseCode = "200", description = "(S0001)회원탈퇴 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
   })
   @Auth
-  @DeleteMapping("/delete")
+  @DeleteMapping()
   public ResponseCustom<Void> deleteUser(@IsLogin LoginStatus loginStatus
   ) {
     userService.deleteUser(loginStatus.getUserId());

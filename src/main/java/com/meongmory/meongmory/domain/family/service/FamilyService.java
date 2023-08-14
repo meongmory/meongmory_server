@@ -2,6 +2,7 @@ package com.meongmory.meongmory.domain.family.service;
 
 import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyPetReq;
 import com.meongmory.meongmory.domain.family.dto.request.CreateFamilyReq;
+import com.meongmory.meongmory.domain.family.dto.request.InviteFamilyMemberReq;
 import com.meongmory.meongmory.domain.family.dto.response.AnimalTypeListRes;
 import com.meongmory.meongmory.domain.family.dto.response.FamilyInviteCodeRes;
 import com.meongmory.meongmory.domain.family.dto.response.FamilyListRes;
@@ -122,11 +123,19 @@ public class FamilyService {
         familyMemberRepository.delete(familyMember);
     }
 
+    @Transactional
+    public void inviteFamilyMember(InviteFamilyMemberReq familyMemberReq, Long userId) {
+        User user = userRepository.findByUserIdAndIsEnable(userId, true).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        Family family = familyRepository.findByFamilyInviteCodeOrFriendInviteCodeAndIsEnable(familyMemberReq.getFamilyCode(), familyMemberReq.getFamilyCode(), true).orElseThrow(() -> new BaseException(BaseResponseCode.FAMILY_NOT_FOUND));
+        if(familyMemberRepository.existsByUserAndFamilyAndIsEnable(user, family, true)) throw new BaseException(BaseResponseCode.FAMILY_EXIST);
+        if (family.getFamilyInviteCode().equals(familyMemberReq.getFamilyCode())) familyMemberRepository.save(FamilyMember.toEntity(user, family, MemberType.FAMILY));
+        else familyMemberRepository.save(FamilyMember.toEntity(user, family, MemberType.OWNER));
+    }
+
     // abstract method
     private LocalDate createPetBirthYear(Integer birth){
         return LocalDate.now().minusYears(birth-1L);
     }
 
     private Integer createPetBirthAge(LocalDate localDate){return LocalDate.now().getYear()-localDate.getYear() - 1;}
-
 }

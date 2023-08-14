@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface FamilyRepository extends JpaRepository<Family, Long> {
   Optional<Family> findByFamilyIdAndIsEnable(Long familyId, Boolean isEnable);
+  Optional<Family> findByFamilyInviteCodeOrFriendInviteCodeAndIsEnable(String familyCode, String friendCode, Boolean isEnable);
 }

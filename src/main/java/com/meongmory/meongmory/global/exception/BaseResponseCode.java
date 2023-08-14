@@ -43,7 +43,8 @@ public enum BaseResponseCode {
     FAMILY_ALREADY_HAD("F0003", HttpStatus.BAD_REQUEST, "사용자의 가족 생성은 최대 1개입니다."),
     FAMILY_TYPE_ACCESS_DENIED("F0004", HttpStatus.BAD_REQUEST, "가족 기능에 접근이 가능한 사용자가 아닙니다."),
     FAMILY_OWNER_DELETE_DENIED("F0005", HttpStatus.BAD_REQUEST, "가족 생성자는 가족 구성원 삭제 불가능합니다."),
-
+    FAMILY_MEMBER_CODE_INVALID("F0006",HttpStatus.BAD_REQUEST,"가족멤버 코드를 입력해주세요."),
+    FAMILY_EXIST("F0007",HttpStatus.BAD_REQUEST,"이미 가족 구성원으로 포함된 유저입니다."),
 
     // pet
     PET_NOT_FOUND("P0001", HttpStatus.NOT_FOUND, "id에 해당하는 반려동물이 존재하지 않습니다."),

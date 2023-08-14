@@ -13,6 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class InviteFamilyMemberReq {
     @Schema(type = "String", description = "가족 코드", example = "nl2BpqB", required = true)
-    @NotBlank(message = "F0005")
+    @NotBlank(message = "G0004")
     private String familyCode;
 }

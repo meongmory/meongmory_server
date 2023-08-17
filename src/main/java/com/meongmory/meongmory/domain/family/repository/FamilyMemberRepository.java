@@ -14,5 +14,6 @@ import java.util.Optional;
 public interface FamilyMemberRepository extends JpaRepository<FamilyMember, Long> {
   Optional<FamilyMember> findByFamilyAndUserAndIsEnable(Family family, User user, Boolean isEnable);
   Boolean existsByUserAndTypeAndIsEnable(User user, MemberType type, Boolean isEnable);
+  Boolean existsByUserAndFamilyAndIsEnable(User user, Family family, Boolean isEnable);
   List<FamilyMember> findAllByFamilyAndTypeAndIsEnable(Family family, MemberType type, Boolean isEnable);
 }

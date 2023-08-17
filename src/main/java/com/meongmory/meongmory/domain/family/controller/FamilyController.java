@@ -6,6 +6,9 @@ import com.meongmory.meongmory.domain.family.dto.response.AnimalTypeListRes;
 import com.meongmory.meongmory.domain.family.dto.response.FamilyInviteCodeRes;
 import com.meongmory.meongmory.domain.family.dto.response.FamilyListRes;
 import com.meongmory.meongmory.domain.family.service.FamilyService;
+import com.meongmory.meongmory.global.resolver.Auth;
+import com.meongmory.meongmory.global.resolver.IsLogin;
+import com.meongmory.meongmory.global.resolver.LoginStatus;
 import com.meongmory.meongmory.global.response.ResponseCustom;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +30,7 @@ import javax.validation.Valid;
 public class FamilyController {
     private final FamilyService familyService;
 
+    @Auth
     @PostMapping("")
     @ResponseBody
     @ApiResponses(value = {
@@ -35,8 +39,10 @@ public class FamilyController {
             @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
     @Operation(summary = "펫 다이어리 생성", description = "이름을 입력받아 펫 다이어리(가족)을 생성합니다.")
-    public ResponseCustom createFamily(@RequestBody @Valid CreateFamilyReq createFamilyReq){
-        familyService.createFamily(createFamilyReq, 1L);
+    public ResponseCustom createFamily(
+            @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
+            @RequestBody @Valid CreateFamilyReq createFamilyReq){
+        familyService.createFamily(createFamilyReq, loginStatus.getUserId());
         return ResponseCustom.OK();
     }
 
@@ -54,6 +60,7 @@ public class FamilyController {
         return ResponseCustom.OK(familyService.getAnimalType(searchword, type, pageable));
     }
 
+    @Auth
     @GetMapping("/{familyId}/invite")
     @ResponseBody
     @ApiResponses(value = {
@@ -62,10 +69,13 @@ public class FamilyController {
             @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n (F0001)존재하지 않은 다이어리(가족)\n (F0002)존재하지 않은 가족 구성원", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
     @Operation(summary = "펫 다이어리 초대 코드 조회", description = "펫 다이어리(가족)을 초대할 초대 코드 정보를 확인합니다.")
-    public ResponseCustom<FamilyInviteCodeRes> getFamilyInviteCode(@Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId){
-        return ResponseCustom.OK(familyService.getFamilyInviteCode(familyId, 1L));
+    public ResponseCustom<FamilyInviteCodeRes> getFamilyInviteCode(
+            @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
+            @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId){
+        return ResponseCustom.OK(familyService.getFamilyInviteCode(familyId, loginStatus.getUserId()));
     }
 
+    @Auth
     @PostMapping("/{familyId}/pet")
     @ResponseBody
     @ApiResponses(value = {
@@ -75,12 +85,14 @@ public class FamilyController {
     })
     @Operation(summary = "펫 다이어리 반려동물 생성", description = "펫 다이어리(가족) 내 반려동물을 생성합니다.")
     public ResponseCustom postFamilyPet(
+            @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
             @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId,
             @RequestBody @Valid CreateFamilyPetReq createFamilyPetReq){
-        familyService.postFamilyPet(createFamilyPetReq, familyId, 1L);
+        familyService.postFamilyPet(createFamilyPetReq, familyId, loginStatus.getUserId());
         return ResponseCustom.OK();
     }
 
+    @Auth
     @DeleteMapping("/{familyId}/pet/{petId}")
     @ResponseBody
     @ApiResponses(value = {
@@ -90,13 +102,15 @@ public class FamilyController {
     })
     @Operation(summary = "펫 다이어리 반려동물 삭제", description = "펫 다이어리(가족) 내 반려동물을 삭제합니다.")
     public ResponseCustom deleteFamilyPet(
+            @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
             @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId,
             @Parameter(description = "(Long) 반려동물 Id", example = "1") @PathVariable(value = "petId") Long petId
     ){
-        familyService.deleteFamilyPet(familyId, petId, 1L);
+        familyService.deleteFamilyPet(familyId, petId, loginStatus.getUserId());
         return ResponseCustom.OK();
     }
 
+    @Auth
     @GetMapping("/{familyId}")
     @ResponseBody
     @ApiResponses(value = {
@@ -105,10 +119,12 @@ public class FamilyController {
     })
     @Operation(summary = "가족/친구/반려동물 리스트", description = "가족 내 반려동물, 가족, 친구 리스트르 불러온다. ")
     public ResponseCustom<FamilyListRes> getFamilyList(
+            @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
             @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId){
-        return ResponseCustom.OK(familyService.getFamilyAndPetList(familyId, 1L));
+        return ResponseCustom.OK(familyService.getFamilyAndPetList(familyId, loginStatus.getUserId()));
     }
 
+    @Auth
     @DeleteMapping("/{familyId}/{userId}")
     @ResponseBody
     @ApiResponses(value = {
@@ -118,10 +134,11 @@ public class FamilyController {
     })
     @Operation(summary = "펫 다이어리 가족, 친구 삭제", description = "펫 다이어리(가족)에서 가족, 친구를 삭제한다. ")
     public ResponseCustom deleteFamilyMember(
+            @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
             @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId,
             @Parameter(description = "(Long) 사용자 Id", example = "1") @PathVariable(value = "userId") Long userId
     ){
-        familyService.deleteFamilyMember(familyId, userId, 1L);
+        familyService.deleteFamilyMember(familyId, userId, loginStatus.getUserId());
         return ResponseCustom.OK();
     }
 }

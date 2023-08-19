@@ -117,7 +117,7 @@ public class FamilyController {
             @ApiResponse(responseCode = "200", description = "(S0001)가족/친구/반려동물 리스트 불러오기 성공", content = @Content(schema = @Schema(implementation = FamilyListRes.class))),
             @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n (F0001)존재하지 않은 다이어리(가족)\n (F0002)존재하지 않은 가족 구성원\n", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
-    @Operation(summary = "가족/친구/반려동물 리스트", description = "가족 내 반려동물, 가족, 친구 리스트르 불러온다. ")
+    @Operation(summary = "가족/친구/반려동물 리스트", description = "가족 내 반려동물, 가족, 친구 리스트를 불러온다. ")
     public ResponseCustom<FamilyListRes> getFamilyList(
             @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
             @Parameter(description = "(Long) 펫 다이어리(가족) Id", example = "1") @PathVariable(value = "familyId") Long familyId){

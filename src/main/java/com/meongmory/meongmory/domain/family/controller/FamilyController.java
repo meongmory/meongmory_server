@@ -136,15 +136,16 @@ public class FamilyController {
         return ResponseCustom.OK();
     }
 
-    @PostMapping("/{familyId}/invite")
+    @PostMapping("/invite")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(S0001)가족/친구 초대 성공", content = @Content(schema = @Schema(implementation = ResponseCustom.class))),
             @ApiResponse(responseCode = "404", description = "(U0001)존재하지 않는 유저\n (F0001)존재하지 않은 다이어리(가족)\n (F0007)이미 가족 구성원인 유저\n", content = @Content(schema = @Schema(implementation = ResponseCustom.class)))
     })
     @Operation(summary = "펫 다이어리 가족, 친구 초대", description = "펫 다이어리(가족)에서 가족, 친구를 초대한다. ")
     public ResponseCustom inviteFamilyMember(
+            @Parameter(description = "JWT 토큰 헤더") @IsLogin LoginStatus loginStatus,
             @RequestBody InviteFamilyMemberReq familyMemberReq){
-        familyService.inviteFamilyMember(familyMemberReq,1L);
+        familyService.inviteFamilyMember(familyMemberReq, loginStatus.getUserId());
         return ResponseCustom.OK();
     }
 

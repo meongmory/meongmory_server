@@ -28,12 +28,12 @@ public class UserService {
         if(userRepository.findByPhone(signUpUserReq.getPhone()).isPresent()){
             throw new BaseException(BaseResponseCode.ALREADY_PHONENUM);}
         User user=userRepository.save(signUpUserReq.toEntity(signUpUserReq));
-        return SignUpUserRes.toDto(user,saveToken(user));
+        return SignUpUserRes.toDto(saveToken(user));
     }
     @Transactional
     public SignUpUserRes signIn(SignInUserReq signInUserReq) {
         User user=userRepository.findByPhone(signInUserReq.getPhone()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NUMBER_NOT_FONUND));
-        return SignUpUserRes.toDto(user,saveToken(user));
+        return SignUpUserRes.toDto(saveToken(user));
     }
 
     private String saveToken(User user) {

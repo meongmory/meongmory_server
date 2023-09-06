@@ -78,18 +78,6 @@ public class TokenUtil {
         refreshExTime = value;
     }
 
-    public String createToken(User user) {
-        String access_token = this.createAccessToken(user.getUserId(), user.getNickname());
-        String refresh_token = this.createRefreshToken(user.getUserId(), user.getNickname());
-        return access_token + COMMA + refresh_token;
-    }
-
-    public String createToken(Long id, String email) {
-        String access_token = this.createAccessTokenEmail(id, email);
-        String refresh_token = this.createRefreshTokenEmail(id, email);
-        return access_token + COMMA + refresh_token;
-    }
-
     public String createAccessToken(Long userId, String nickname) {
         Claims claims = Jwts.claims()
                 .setSubject(accessName)
